@@ -58,8 +58,7 @@ Versi frontend rinci menjadi sumber kebenaran di `package-lock.json`.
 
 ## Batasan
 
-- MySQL dan database lokal telah melewati connection preflight, tetapi
-  migration MySQL belum dijalankan.
+- Baseline migration MySQL telah diuji pada milestone Phase 1.2.
 - Larastan dan GitHub Actions belum dipasang/dibuat.
 - Authentication, Livewire, authorization, dan domain HRIS belum dimulai.
 - Composer signing public keys pada mesin pengguna masih perlu dikonfigurasi.
@@ -96,4 +95,4 @@ Versi frontend rinci menjadi sumber kebenaran di `package-lock.json`.
 - [x] `.env` di-ignore.
 - [x] MySQL local aktif.
 - [x] Database local dibuat.
-- [ ] Migration baseline lulus pada MySQL.
+- [x] Migration baseline lulus pada MySQL.

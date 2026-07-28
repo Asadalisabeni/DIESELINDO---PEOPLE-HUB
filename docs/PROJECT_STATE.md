@@ -6,8 +6,8 @@ Terakhir diperbarui: 28 Juli 2026 (Asia/Jakarta)
 
 - Current phase: Phase 1 — Project setup.
 - Phase 0 gate: disetujui Project/UAT Lead pada 28 Juli 2026.
-- Current checkpoint: Phase 1.2 MySQL preflight selesai; baseline migration
-  menunggu eksekusi.
+- Current checkpoint: Phase 1.2 MySQL baseline migration selesai dan
+  terverifikasi.
 - Laravel Framework: 13.23.0.
 - PHP: 8.3.30.
 - Pest: 4.7.5.
@@ -15,7 +15,9 @@ Terakhir diperbarui: 28 Juli 2026 (Asia/Jakarta)
 - Git: repository lokal pada branch `main`, commit awal belum dibuat.
 - Database aplikasi: `dieselindo_peoplehub` sudah dibuat pada MySQL 8.4.3
   port 3306 dengan charset `utf8mb4` dan collation `utf8mb4_unicode_ci`.
-- Migration aplikasi belum dijalankan; tabel `migrations` belum tersedia.
+- Tiga baseline migration Laravel sudah berstatus `Ran` pada batch 1.
+- Schema baseline terdiri dari 9 tabel InnoDB dengan collation
+  `utf8mb4_unicode_ci`.
 
 ## Hasil Phase 1.1
 
@@ -43,7 +45,13 @@ Terakhir diperbarui: 28 Juli 2026 (Asia/Jakarta)
 - Database `dieselindo_peoplehub`: PASS.
 - Charset/collation: `utf8mb4` / `utf8mb4_unicode_ci`.
 - `php artisan migrate:status`: koneksi PASS dan menghasilkan
-  `Migration table not found`, sesuai kondisi database Laravel yang masih baru.
+  seluruh baseline migration berstatus `[1] Ran`.
+- Pre-rollback data safety check: seluruh tabel aplikasi memiliki 0 baris.
+- `php artisan migrate:rollback --step=3`: PASS.
+- Verifikasi setelah rollback: hanya tabel `migrations` tersisa, berisi 0 baris,
+  dan tiga migration berstatus `Pending`.
+- `php artisan migrate` setelah rollback: PASS.
+- Verifikasi engine/collation/index MySQL: PASS.
 
 ## Security baseline
 
@@ -52,16 +60,19 @@ Terakhir diperbarui: 28 Juli 2026 (Asia/Jakarta)
 - Local debug aktif hanya untuk environment local.
 - Session payload encryption diaktifkan melalui `SESSION_ENCRYPT=true`.
 - Credential database lokal tidak dimasukkan ke `.env.example`.
+- Akun MySQL `root` tanpa password hanya merupakan baseline Laragon lokal dan
+  tidak boleh digunakan pada staging atau production.
 
 ## Open gates
 
 1. Isi nama stakeholder dan owner risiko secara formal.
-2. Jalankan baseline migration pada database lokal dan verifikasi rollback.
-3. Selesaikan quality toolchain Phase 1: Larastan dan CI workflow.
-4. Buat base application layout pada milestone terpisah setelah quality gate.
-5. Konfigurasi Composer signing public keys pada mesin pengguna.
+2. Selesaikan quality toolchain Phase 1: Larastan dan CI workflow.
+3. Buat base application layout pada milestone terpisah setelah quality gate.
+4. Konfigurasi Composer signing public keys pada mesin pengguna.
+5. Rancang database user least-privilege untuk staging dan production.
 
 ## Next authorized step
 
-Phase 1.2 berikutnya: jalankan baseline migration, periksa schema MySQL, lalu
-uji rollback/migrate ulang sebelum milestone dinyatakan selesai.
+Phase 1.3: pasang dan konfigurasi Larastan, tetapkan quality scripts, lalu buat
+GitHub Actions workflow yang menjalankan install, static analysis, formatting,
+test, dan frontend build.

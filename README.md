@@ -23,6 +23,7 @@ repository Git. Paket domain HRIS belum dipasang.
 - [Checklist environment lokal](docs/00-governance/local-environment-checklist.md)
 - [Project state](docs/PROJECT_STATE.md)
 - [Phase 1.1 bootstrap report](docs/01-project-setup/phase-1-bootstrap.md)
+- [Phase 1.2 MySQL baseline report](docs/01-project-setup/phase-1-mysql-baseline.md)
 
 ## Local verification
 
@@ -38,8 +39,7 @@ php artisan test
 npm.cmd run build
 ```
 
-Migrasi MySQL belum dijalankan karena service lokal belum aktif dan database
-lokal belum dibuat.
+Baseline migration MySQL sudah dijalankan dan diuji rollback/migrate ulang.
 
 ## Aturan kerja
 
