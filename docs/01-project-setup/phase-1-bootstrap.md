@@ -58,7 +58,8 @@ Versi frontend rinci menjadi sumber kebenaran di `package-lock.json`.
 
 ## Batasan
 
-- MySQL belum listening pada port 3306, sehingga migration MySQL belum diuji.
+- MySQL dan database lokal telah melewati connection preflight, tetapi
+  migration MySQL belum dijalankan.
 - Larastan dan GitHub Actions belum dipasang/dibuat.
 - Authentication, Livewire, authorization, dan domain HRIS belum dimulai.
 - Composer signing public keys pada mesin pengguna masih perlu dikonfigurasi.
@@ -93,6 +94,6 @@ Versi frontend rinci menjadi sumber kebenaran di `package-lock.json`.
 - [x] Formatting dan frontend build lulus.
 - [x] Dependency security audit lulus.
 - [x] `.env` di-ignore.
-- [ ] MySQL local aktif.
-- [ ] Database local dibuat.
+- [x] MySQL local aktif.
+- [x] Database local dibuat.
 - [ ] Migration baseline lulus pada MySQL.

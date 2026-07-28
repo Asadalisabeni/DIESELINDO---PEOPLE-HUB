@@ -17,7 +17,8 @@ Pemeriksaan dilakukan pada 28 Juli 2026 dari
 | Git CLI | PASS | 2.55.0.windows.2 |
 | MySQL binary | PASS | MySQL Community Server 8.4.3 tersedia di Laragon |
 | MySQL pada PATH | WARNING | `mysql` tidak ditemukan lewat PATH; gunakan path Laragon atau Laragon terminal |
-| MySQL service/listener | BLOCKED | Port 3306 tidak sedang listening pada saat pemeriksaan |
+| MySQL service/listener | PASS | MySQL 8.4.3 aktif pada `127.0.0.1:3306` |
+| Database aplikasi lokal | PASS | `dieselindo_peoplehub`, `utf8mb4_unicode_ci` |
 | Windows timezone | PASS | `(UTC+07:00) Bangkok, Hanoi, Jakarta` |
 | PHP CLI default timezone | WARNING | `UTC`; aplikasi harus menetapkan `Asia/Jakarta` secara eksplisit |
 | Domain/SSL/SSH/VPS | DEFERRED | Belum tersedia sesuai brief |
@@ -43,10 +44,10 @@ Get-TimeZone
 
 ## Tindakan sebelum Phase 1
 
-1. Jalankan Laragon/MySQL dan pastikan port/database credential lokal.
-2. Buat database lokal `dieselindo_peoplehub`, kemudian uji migration.
-3. Gunakan `npm.cmd`, atau ubah Execution Policy hanya bila kebijakan keamanan
+1. Jalankan dan verifikasi baseline migration pada database
+   `dieselindo_peoplehub`.
+2. Gunakan `npm.cmd`, atau ubah Execution Policy hanya bila kebijakan keamanan
    lokal mengizinkan. Perubahan policy tidak diperlukan untuk proyek.
-4. Konfigurasi Composer signing keys secara interaktif pada mesin pengguna dan
+3. Konfigurasi Composer signing keys secara interaktif pada mesin pengguna dan
    ulangi diagnose dengan konektivitas registry.
-5. Jangan menaruh credential lokal pada file yang akan di-commit.
+4. Jangan menaruh credential lokal pada file yang akan di-commit.

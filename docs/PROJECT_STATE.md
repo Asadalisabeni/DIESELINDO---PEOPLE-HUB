@@ -6,14 +6,16 @@ Terakhir diperbarui: 28 Juli 2026 (Asia/Jakarta)
 
 - Current phase: Phase 1 — Project setup.
 - Phase 0 gate: disetujui Project/UAT Lead pada 28 Juli 2026.
-- Current checkpoint: Phase 1.1 Laravel bootstrap selesai dan terverifikasi.
+- Current checkpoint: Phase 1.2 MySQL preflight selesai; baseline migration
+  menunggu eksekusi.
 - Laravel Framework: 13.23.0.
 - PHP: 8.3.30.
 - Pest: 4.7.5.
 - Pest Laravel plugin: 4.1.0.
 - Git: repository lokal pada branch `main`, commit awal belum dibuat.
-- Database aplikasi: konfigurasi MySQL dibuat, tetapi database/migration lokal
-  belum dijalankan karena port 3306 belum aktif.
+- Database aplikasi: `dieselindo_peoplehub` sudah dibuat pada MySQL 8.4.3
+  port 3306 dengan charset `utf8mb4` dan collation `utf8mb4_unicode_ci`.
+- Migration aplikasi belum dijalankan; tabel `migrations` belum tersedia.
 
 ## Hasil Phase 1.1
 
@@ -37,6 +39,11 @@ Terakhir diperbarui: 28 Juli 2026 (Asia/Jakarta)
 - `npm.cmd run build`: PASS.
 - `composer audit --locked`: 0 security advisories.
 - `npm.cmd audit --audit-level=high`: 0 vulnerabilities.
+- Koneksi MySQL `127.0.0.1:3306`: PASS.
+- Database `dieselindo_peoplehub`: PASS.
+- Charset/collation: `utf8mb4` / `utf8mb4_unicode_ci`.
+- `php artisan migrate:status`: koneksi PASS dan menghasilkan
+  `Migration table not found`, sesuai kondisi database Laravel yang masih baru.
 
 ## Security baseline
 
@@ -49,12 +56,12 @@ Terakhir diperbarui: 28 Juli 2026 (Asia/Jakarta)
 ## Open gates
 
 1. Isi nama stakeholder dan owner risiko secara formal.
-2. Jalankan MySQL Laragon, buat database lokal, lalu uji migration.
+2. Jalankan baseline migration pada database lokal dan verifikasi rollback.
 3. Selesaikan quality toolchain Phase 1: Larastan dan CI workflow.
 4. Buat base application layout pada milestone terpisah setelah quality gate.
 5. Konfigurasi Composer signing public keys pada mesin pengguna.
 
 ## Next authorized step
 
-Phase 1.2: database local preflight dan migration baseline. Langkah ini hanya
-dijalankan setelah MySQL lokal aktif dan database credential dikonfirmasi.
+Phase 1.2 berikutnya: jalankan baseline migration, periksa schema MySQL, lalu
+uji rollback/migrate ulang sebelum milestone dinyatakan selesai.
