@@ -18,6 +18,8 @@ atau modul bisnis HRIS.
   bergantung pada font CDN.
 - `tests/Feature/ApplicationBaselineTest.php` memverifikasi response, view,
   locale, landmark semantik, skip link, dan status Phase 1.
+- `tests/TestCase.php` menonaktifkan resolusi Vite hanya selama automated test,
+  sehingga backend test tidak bergantung pada output build dari job frontend.
 
 ## Boundary
 

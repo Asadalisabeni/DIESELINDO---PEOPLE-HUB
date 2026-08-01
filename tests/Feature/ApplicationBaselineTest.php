@@ -7,7 +7,7 @@ test('the application uses the approved peoplehub baseline', function () {
         ->and(config('app.fallback_locale'))->toBe('en')
         ->and(config('app.faker_locale'))->toBe('id_ID')
         ->and(config('filesystems.disks.public.url'))
-        ->toBe('http://dieselindo-peoplehub.test/storage');
+        ->toBe(rtrim((string) config('app.url'), '/').'/storage');
 });
 
 test('the home page renders the shared application layout', function () {
