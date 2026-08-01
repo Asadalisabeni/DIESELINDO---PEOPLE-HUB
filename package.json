@@ -3,8 +3,14 @@
     "name": "dieselindo-peoplehub",
     "private": true,
     "type": "module",
+    "packageManager": "npm@11.13.0",
+    "engines": {
+        "node": "^24.0.0",
+        "npm": "^11.0.0"
+    },
     "scripts": {
         "build": "vite build",
+        "check": "npm run build",
         "dev": "vite"
     },
     "devDependencies": {

@@ -24,6 +24,7 @@ repository Git. Paket domain HRIS belum dipasang.
 - [Project state](docs/PROJECT_STATE.md)
 - [Phase 1.1 bootstrap report](docs/01-project-setup/phase-1-bootstrap.md)
 - [Phase 1.2 MySQL baseline report](docs/01-project-setup/phase-1-mysql-baseline.md)
+- [Phase 1.3 quality toolchain report](docs/01-project-setup/phase-1-quality-toolchain.md)
 
 ## Local verification
 
@@ -34,9 +35,8 @@ Set-Location -LiteralPath 'C:\laragon\www\DIESELINDO PEOPLEHUB'
 
 composer install
 npm.cmd install
-php artisan test
-& '.\vendor\bin\pint.bat' --test
-npm.cmd run build
+composer run quality
+npm.cmd run check
 ```
 
 Baseline migration MySQL sudah dijalankan dan diuji rollback/migrate ulang.

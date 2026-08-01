@@ -1,0 +1,118 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - main
+            - develop
+    pull_request:
+        branches:
+            - main
+            - develop
+
+permissions:
+    contents: read
+
+concurrency:
+    group: ci-${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    backend:
+        name: PHP quality and MySQL migration
+        runs-on: ubuntu-24.04
+        timeout-minutes: 20
+
+        services:
+            mysql:
+                image: mysql:8.4
+                env:
+                    MYSQL_DATABASE: dieselindo_peoplehub_test
+                    MYSQL_ROOT_PASSWORD: root
+                ports:
+                    - 3306:3306
+                options: >-
+                    --health-cmd="mysqladmin ping --silent --host=127.0.0.1 --user=root --password=root"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=10
+
+        env:
+            APP_ENV: testing
+            APP_DEBUG: 'false'
+            APP_URL: http://localhost
+            DB_CONNECTION: mysql
+            DB_HOST: 127.0.0.1
+            DB_PORT: '3306'
+            DB_DATABASE: dieselindo_peoplehub_test
+            DB_USERNAME: root
+            DB_PASSWORD: root
+            CACHE_STORE: array
+            MAIL_MAILER: array
+            QUEUE_CONNECTION: sync
+            SESSION_DRIVER: array
+            COMPOSER_NO_INTERACTION: '1'
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6.0.2
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2
+              with:
+                  php-version: '8.3'
+                  extensions: bcmath, curl, dom, fileinfo, intl, mbstring, openssl, pdo_mysql, pdo_sqlite, sodium, xml, zip
+                  coverage: none
+                  tools: composer:v2
+              env:
+                  fail-fast: true
+
+            - name: Validate Composer files
+              run: composer validate --strict
+
+            - name: Install PHP dependencies
+              run: composer install --prefer-dist --no-progress --optimize-autoloader
+
+            - name: Prepare Laravel environment
+              run: |
+                  cp .env.example .env
+                  php artisan key:generate
+
+            - name: Verify MySQL migrations
+              run: php artisan migrate --force
+
+            - name: Verify code formatting
+              run: composer run format:test
+
+            - name: Run static analysis
+              run: composer run analyse
+
+            - name: Run automated tests
+              run: composer run test
+
+            - name: Audit PHP dependencies
+              run: composer audit --locked --no-interaction
+
+    frontend:
+        name: Frontend build and audit
+        runs-on: ubuntu-24.04
+        timeout-minutes: 10
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6.0.2
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v6.4.0
+              with:
+                  node-version: '24'
+                  cache: npm
+
+            - name: Install frontend dependencies
+              run: npm ci --ignore-scripts
+
+            - name: Build frontend assets
+              run: npm run build
+
+            - name: Audit frontend dependencies
+              run: npm audit --audit-level=high

@@ -26,7 +26,7 @@ concept Phase 1 selesai.
 | Authorization | `spatie/laravel-permission` | Role/permission granular | Laravel 13 constraint, cache, MySQL indexes, custom scope design |
 | Audit | `spatie/laravel-activitylog` | Audit aktivitas aplikasi | Laravel 13 support, sensitive-field redaction, retention |
 | Test | `pestphp/pest` + Laravel plugin | Unit/feature testing | Laravel plugin compatibility |
-| Static analysis | `larastan/larastan` | PHPStan untuk Laravel | Laravel 13 support dan baseline tanpa suppress berlebihan |
+| Static analysis | `larastan/larastan` 3.10.0 | PHPStan untuk Laravel | Terverifikasi pada Laravel 13; level 8 tanpa baseline/suppression |
 | Formatting | `laravel/pint` | Style automation | Versi bawaan/kompatibel |
 | Spreadsheet | `maatwebsite/excel` | Import/export Excel | Laravel 13 support, memory/chunk/import security PoC |
 | PDF | Dipilih setelah spike | Payslip/report PDF | Laravel 13, font Indonesia, encryption/password, QR, layout test |

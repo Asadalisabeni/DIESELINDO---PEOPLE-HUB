@@ -27,6 +27,9 @@
 | DEC-021 | Baseline Phase 0 disetujui Project/UAT Lead pada 28 Juli 2026; Phase 1 diizinkan dimulai. |
 | DEC-022 | Folder kerja lokal tetap `C:\laragon\www\DIESELINDO PEOPLEHUB`; nama package/repository tetap `dieselindo/peoplehub` dan `dieselindo-peoplehub`. |
 | DEC-023 | Pest 4 dipakai sebagai test framework. Versi terverifikasi saat bootstrap: Pest 4.7.5 dan Laravel plugin 4.1.0. |
+| DEC-024 | Static analysis menggunakan Larastan level 8 tanpa baseline, ignored error, atau suppression. |
+| DEC-025 | Composer dependency resolution dipatok pada PHP 8.3.30 dan minimum stability `stable` agar konsisten dengan runtime yang disetujui. |
+| DEC-026 | CI memisahkan backend dan frontend; backend memvalidasi migration pada MySQL 8.4, sedangkan test suite tetap memakai SQLite in-memory. |
 
 ## B. Baseline configurable yang belum boleh dianggap kebijakan production
 
