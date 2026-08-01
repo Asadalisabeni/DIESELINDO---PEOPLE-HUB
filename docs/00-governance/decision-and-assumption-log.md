@@ -30,6 +30,9 @@
 | DEC-024 | Static analysis menggunakan Larastan level 8 tanpa baseline, ignored error, atau suppression. |
 | DEC-025 | Composer dependency resolution dipatok pada PHP 8.3.30 dan minimum stability `stable` agar konsisten dengan runtime yang disetujui. |
 | DEC-026 | CI memisahkan backend dan frontend; backend memvalidasi migration pada MySQL 8.4, sedangkan test suite tetap memakai SQLite in-memory. |
+| DEC-027 | Repository GitHub canonical adalah `https://github.com/Asadalisabeni/DIESELINDO---PEOPLE-HUB.git`; nama Composer/npm tetap `dieselindo/peoplehub` dan `dieselindo-peoplehub`. |
+| DEC-028 | Initial bootstrap diizinkan push langsung ke `main` karena repository remote masih kosong; perubahan setelah baseline mengikuti branch dan pull request pada DEC-018. |
+| DEC-029 | Phase 1 disetujui Project/UAT Lead pada 2 Agustus 2026 setelah base layout, automated test, build, static analysis, migration status, dan browser runtime check lulus; Phase 2 diizinkan dimulai. |
 
 ## B. Baseline configurable yang belum boleh dianggap kebijakan production
 

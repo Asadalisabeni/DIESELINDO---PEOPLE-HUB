@@ -171,4 +171,4 @@ npm.cmd audit --audit-level=high
 - [x] Workflow dan YAML tervalidasi.
 - [x] Dependency audit lulus.
 - [ ] CI dijalankan pada GitHub remote.
-- [ ] Base application layout dibuat.
+- [x] Base application layout dibuat pada milestone Phase 1.4.

@@ -5,11 +5,12 @@ dan anak perusahaan. Sistem dirancang sebagai modular monolith berbasis Laravel
 untuk Core HR, ESS, attendance, leave, overtime, payroll, statutory, approval,
 reporting, notification, audit, dan data migration.
 
-Status saat ini: **Phase 1 — Project setup**.
+Status saat ini: **Phase 2 — Architecture dan database design**.
 
-Baseline Phase 0 telah disetujui pada 28 Juli 2026. Milestone Phase 1.1 telah
-menyiapkan Laravel 13, Pest, dependency frontend, konfigurasi lokal, dan
-repository Git. Paket domain HRIS belum dipasang.
+Baseline Phase 0 telah disetujui pada 28 Juli 2026. Phase 1 diselesaikan dan
+disetujui pada 2 Agustus 2026 dengan Laravel 13, MySQL 8.4, Pest, Larastan,
+quality gate, GitHub Actions, dan base application layout. Paket domain HRIS
+belum dipasang.
 
 ## Dokumen Phase 0
 
@@ -25,6 +26,8 @@ repository Git. Paket domain HRIS belum dipasang.
 - [Phase 1.1 bootstrap report](docs/01-project-setup/phase-1-bootstrap.md)
 - [Phase 1.2 MySQL baseline report](docs/01-project-setup/phase-1-mysql-baseline.md)
 - [Phase 1.3 quality toolchain report](docs/01-project-setup/phase-1-quality-toolchain.md)
+- [Phase 1.4 base layout report](docs/01-project-setup/phase-1-base-layout.md)
+- [Phase 1 exit review](docs/01-project-setup/phase-1-exit-review.md)
 
 ## Local verification
 
