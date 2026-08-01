@@ -49,7 +49,8 @@ Terakhir diperbarui: 2 Agustus 2026 (Asia/Jakarta)
 - `php artisan migrate:status`: 3 migration `[1] Ran`.
 - Composer audit: 0 security advisories.
 - npm audit: 0 vulnerabilities.
-- GitHub Actions workflow: static validation PASS dengan actionlint 1.7.12.
+- GitHub Actions workflow: PASS pada run `30712882261`; static validation juga
+  PASS dengan actionlint 1.7.12.
 - Workflow dan Dependabot YAML: syntax/structure PASS.
 - Secret pattern scan: PASS.
 - Browser desktop 1280×720 dan mobile 375×812: PASS; tidak ada horizontal
@@ -73,8 +74,6 @@ Terakhir diperbarui: 2 Agustus 2026 (Asia/Jakarta)
 1. Isi nama stakeholder dan owner risiko secara formal.
 2. Konfigurasi Composer signing public keys pada mesin pengguna.
 3. Rancang database user least-privilege untuk staging dan production.
-4. Verifikasi eksekusi GitHub Actions aktual pada commit checkpoint setelah
-   initial push.
 
 ## Next authorized step
 

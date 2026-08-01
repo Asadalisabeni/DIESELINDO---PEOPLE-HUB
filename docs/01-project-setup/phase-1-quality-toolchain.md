@@ -170,5 +170,5 @@ npm.cmd audit --audit-level=high
 - [x] Dependabot tersedia.
 - [x] Workflow dan YAML tervalidasi.
 - [x] Dependency audit lulus.
-- [ ] CI dijalankan pada GitHub remote.
+- [x] CI dijalankan pada GitHub remote dan lulus pada run `30712882261`.
 - [x] Base application layout dibuat pada milestone Phase 1.4.

@@ -53,5 +53,4 @@ Hasil:
 
 - Branch: `main` untuk initial repository bootstrap.
 - Commit message: `feat: complete phase 1 project setup`.
-- Phase tag: `phase-1-complete` setelah GitHub Actions pada commit checkpoint
-  lulus.
+- Phase tag: `phase-1-complete`.
