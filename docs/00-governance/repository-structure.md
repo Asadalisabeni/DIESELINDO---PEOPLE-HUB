@@ -90,3 +90,8 @@ dieselindo-peoplehub/
 5. Model Eloquent boleh berada di `app/Models`, sementara policy, action, value
    object, calculation, dan workflow dipisahkan menurut tanggung jawab.
 6. Boundary akan diperkuat dengan architecture tests pada Phase 1/2.
+
+Baseline ownership dan dependency direction yang disetujui berada pada
+[Architecture overview](../02-architecture/architecture-overview.md) dan
+[Module boundaries](../02-architecture/module-boundaries.md). Dokumen Phase 2
+menggantikan bagian yang masih bersifat rekomendasi apabila terdapat perbedaan.

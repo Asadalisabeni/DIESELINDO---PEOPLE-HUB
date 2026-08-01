@@ -24,6 +24,10 @@ dan 1–3 rendah.
 | R-016 | Kebijakan perusahaan belum tertulis sehingga konfigurasi dianggap final secara keliru. | 5 | 4 | 20 | HR + Management | Assumption log, effective-dated approval, configuration status (`draft/approved/retired`). |
 | R-017 | Secrets atau data production masuk repository/staging. | 3 | 5 | 15 | Engineering + IT | `.env` ignored, secret scanning, masked staging data, least-privilege deployment identity. |
 | R-018 | Performa report/payroll turun saat histori lima tahun dimigrasi. | 3 | 3 | 9 | Engineering + DBA | Volume baseline, indexes, query review, chunked jobs, performance test with representative data. |
+| R-019 | Effective-dated row overlap atau boundary tanggal salah sehingga assignment/rule ganda aktif. | 3 | 5 | 15 | Engineering + HR/Payroll | Half-open interval, date checks, unique natural key/from, transactional overlap lock, boundary/concurrency tests. |
+| R-020 | Generic approval subject menjadi orphan atau salah entity karena tidak memiliki FK langsung ke seluruh tabel bisnis. | 2 | 4 | 8 | Engineering + Process owner | Allowlisted subject registry, existence/entity validation, immutable summary snapshot, reconciliation dan integration tests. |
+| R-021 | Encryption/blind-index key salah kelola sehingga data bocor atau tidak dapat dicari/dipulihkan. | 3 | 5 | 15 | Security + IT | External versioned keys, keyed blind index, rotation/restore plan, environment separation, audit dan break-glass control. |
+| R-022 | Queue, export, report, atau CLI melewati legal-entity scope meski UI/HTTP sudah aman. | 3 | 5 | 15 | Engineering + Security | Explicit `LegalEntityScope`, service identity capability, scope snapshot/recheck, no serialized actor/model, negative tests semua entry point. |
 
 ## Review cadence
 
@@ -33,3 +37,18 @@ dan 1–3 rendah.
   stakeholder ditetapkan.
 - Risiko kritis yang belum memiliki treatment yang disetujui menghalangi
   milestone terkait.
+
+## Phase 2 treatment review
+
+- R-002/R-010: architecture treatment ditetapkan dalam ADR-0002, ADR-0007, dan
+  multi-company security model; implementation/security-test evidence tetap
+  gate Phase 4/5/10/12.
+- R-008: generic approval snapshot/fallback/separation-of-duty ditetapkan dalam
+  ADR-0006; workflow test tetap gate module terkait.
+- R-009: effective history dan payroll snapshot/immutability ditetapkan dalam
+  ADR-0003/ADR-0005; calculation evidence tetap gate Phase 10.
+- R-017: repository hygiene tetap aktif; key/secret provisioning menjadi
+  operational gate.
+- R-019–R-022: treatment desain tersedia, tetapi residual score baru boleh
+  diturunkan setelah implementation, concurrency/negative tests, key rotation,
+  dan owner sign-off.

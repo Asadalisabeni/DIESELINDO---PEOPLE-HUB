@@ -33,6 +33,15 @@
 | DEC-027 | Repository GitHub canonical adalah `https://github.com/Asadalisabeni/DIESELINDO---PEOPLE-HUB.git`; nama Composer/npm tetap `dieselindo/peoplehub` dan `dieselindo-peoplehub`. |
 | DEC-028 | Initial bootstrap diizinkan push langsung ke `main` karena repository remote masih kosong; perubahan setelah baseline mengikuti branch dan pull request pada DEC-018. |
 | DEC-029 | Phase 1 disetujui Project/UAT Lead pada 2 Agustus 2026 setelah base layout, automated test, build, static analysis, migration status, dan browser runtime check lulus; Phase 2 diizinkan dimulai. |
+| DEC-030 | Module memakai layered modular monolith: Delivery → Application → Domain; Infrastructure mengimplementasikan port milik layer dalam. Cross-module write hanya melalui Application contract pemilik data. |
+| DEC-031 | Tenant-owned row membawa `legal_entity_id` eksplisit dan akses menggunakan deny-by-default permission + entity scope + Policy + field authorization + separation-of-duty. |
+| DEC-032 | Instant disimpan UTC sebagai `DATETIME(6)`, business date sebagai `DATE`, local schedule sebagai `TIME` + timezone, dan ditampilkan dalam `Asia/Jakarta`. Effective interval memakai `[effective_from, effective_to)`. |
+| DEC-033 | Database menggunakan internal `BIGINT UNSIGNED` dan public ULID `CHAR(26)` untuk resource addressable; public ID tidak menjadi bukti authorization. |
+| DEC-034 | Uang memakai `DECIMAL(19,4)`, rate `DECIMAL(12,8)`, unit fractional `DECIMAL(19,6)`, dan PHP decimal string. Rounding mode/scale wajib eksplisit dan tersimpan pada version/snapshot. |
+| DEC-035 | Generic approval memakai effective/versioned definition dan resolved instance-step snapshot. Action append-only; salary, bank, payroll, dan restricted data tidak auto-approved. |
+| DEC-036 | Audit bersifat append-only dan redacted. Restricted identifiers dienkripsi dengan masked suffix dan keyed blind index bila perlu lookup; file tetap private dan akses/view/export diaudit. |
+| DEC-037 | Akun database staging/production dipisah menjadi migrator, runtime, worker, report reader, backup, dan monitor dengan least privilege; local Laragon root bukan baseline deployment. |
+| DEC-038 | Phase 2 logical architecture baseline disetujui Project/UAT Lead pada 2 Agustus 2026 setelah module boundary, tujuh ADR, ERD, data dictionary, tenancy/security model, dan automated documentation consistency checks selesai. |
 
 ## B. Baseline configurable yang belum boleh dianggap kebijakan production
 
@@ -44,7 +53,6 @@
 | ASM-004 | Cuti tahunan 12 hari setelah 12 bulan, valid 12 bulan, carry-forward nonaktif. | Policy per legal entity dan effective date. |
 | ASM-005 | Surat dokter diwajibkan setelah ambang hari tertentu. | Ambang, exception, dan data-access policy medis. |
 | ASM-006 | Reminder 90/60/30/7 hari; approval reminder 24/48/72 jam. | SLA dan escalation matrix per workflow. |
-| ASM-007 | Metode penyimpanan timestamp UTC dan presentasi WIB. | Architecture decision record pada Phase 2. |
 | ASM-008 | Deep navy, industrial orange, slate/gray, font Inter. | Logo, brand guide, dan persetujuan visual. |
 | ASM-009 | Domain kandidat `hris.dieselindo.co.id`. | Persetujuan domain, DNS owner, dan environment URL. |
 | ASM-010 | Server awal 2 vCPU, 4 GB RAM, 80 GB SSD/NVMe. | Load test, growth estimate, provider, dan budget. |
@@ -54,7 +62,13 @@
 | ASM-014 | Division dan cost center opsional. | Master organization dan accounting requirements. |
 | ASM-015 | Employee status awal tetap dan PKWT. | Code list resmi serta status legacy untuk migration mapping. |
 
-## C. Informasi yang perlu dikumpulkan tanpa menghalangi dokumentasi Phase 0
+## C. Assumption yang sudah diresolusikan
+
+| ID | Resolusi |
+|---|---|
+| ASM-007 | Diselesaikan oleh DEC-032 dan ADR-0003: instant UTC `DATETIME(6)`, business `DATE`, schedule `TIME` + timezone, presentation `Asia/Jakarta`. |
+
+## D. Informasi yang perlu dikumpulkan tanpa menghalangi dokumentasi Phase 0
 
 1. Nama sponsor, product owner, process owner, approver, dan technical owner.
 2. Daftar legal entity beserta identitas legal, NPWP, alamat, logo, dan rekening.
