@@ -55,7 +55,7 @@ jobs:
 
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v6.0.2
+              uses: actions/checkout@v7.0.1
 
             - name: Setup PHP
               uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2
@@ -100,7 +100,7 @@ jobs:
 
         steps:
             - name: Checkout repository
-              uses: actions/checkout@v6.0.2
+              uses: actions/checkout@v7.0.1
 
             - name: Setup Node.js
               uses: actions/setup-node@v6.4.0
