@@ -95,3 +95,9 @@ Baseline ownership dan dependency direction yang disetujui berada pada
 [Architecture overview](../02-architecture/architecture-overview.md) dan
 [Module boundaries](../02-architecture/module-boundaries.md). Dokumen Phase 2
 menggantikan bagian yang masih bersifat rekomendasi apabila terdapat perbedaan.
+
+Dokumentasi UI foundation berada pada `docs/03-design-system/`. Blade UI
+primitives berada pada `resources/views/components/`, sedangkan catalog route
+berada pada `resources/views/design-system/`. Folder security yang sebelumnya
+direkomendasikan dipindahkan ke milestone dokumentasi berikutnya agar nomor
+phase tetap tidak ambigu.

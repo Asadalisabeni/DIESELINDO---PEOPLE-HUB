@@ -14,11 +14,13 @@ test('the home page renders the shared application layout', function () {
     $this->get('/')
         ->assertOk()
         ->assertViewIs('welcome')
-        ->assertSee('<html lang="id">', false)
+        ->assertSee('<html lang="id" class="h-full">', false)
+        ->assertSee('id="application-sidebar"', false)
         ->assertSee('<header', false)
         ->assertSee('<main id="main-content"', false)
         ->assertSee('<footer', false)
         ->assertSee('Lewati ke konten utama')
         ->assertSee('Dieselindo PeopleHub')
-        ->assertSee('Phase 1 — Project setup selesai');
+        ->assertSee('Phase 2 terkunci')
+        ->assertSee('Fondasi kerja yang konsisten');
 });
