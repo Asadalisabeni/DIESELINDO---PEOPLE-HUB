@@ -51,8 +51,9 @@ Terakhir diperbarui: 3 Agustus 2026 (Asia/Jakarta)
   interaction, CSS/JavaScript assets, anonymous `/ess` redirect, dan console
   tanpa warning/error telah diverifikasi pada `127.0.0.1:8085`. Server QA
   sementara telah dihentikan; port `8877` dan project MES tidak disentuh.
-- Authenticated ESS/reviewer browser QA dan GitHub Actions draft PR masih menjadi
-  exit gate.
+- GitHub Actions draft PR #17: PASS — run `30762360484`; frontend build/audit
+  serta PHP quality/MySQL migration hijau.
+- Authenticated ESS/reviewer browser QA masih menjadi exit gate.
 
 ### Local QA recovery note Phase 5
 
@@ -92,13 +93,12 @@ project lain tidak disentuh.
    family relationship code, dan employment manual follow-up SOP.
 4. Malware scanner/private object storage, retention/legal hold, dan named data
    owner sebelum staging.
-5. GitHub Actions hijau, explicit stakeholder review, dan pernyataan lock sebelum
-   merge/promote/tag Phase 6.
+5. Explicit stakeholder review dan pernyataan lock sebelum merge/promote/tag
+   Phase 6.
 
 ## Next authorized step
 
-Commit/push implementation candidate ke draft PR dan verifikasi GitHub Actions.
-Provision administrator hanya setelah credential compliant tersedia, lalu
-selesaikan authenticated browser/UAT dengan HR master data yang valid. Jangan
-merge atau membuat tag `phase-6-complete` sebelum lock eksplisit Project/UAT
-Lead.
+Draft PR #17 sudah terbuka ke `develop` dan CI hijau. Provision administrator
+hanya setelah credential compliant tersedia, lalu selesaikan authenticated
+browser/UAT dengan HR master data yang valid. Tunggu review Project/UAT Lead;
+jangan merge atau membuat tag `phase-6-complete` sebelum lock eksplisit.
