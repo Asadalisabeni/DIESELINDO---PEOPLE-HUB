@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\EmployeeDocument;
 use App\Models\User;
 use App\Services\Employee\EmployeeDocumentManager;
+use App\Services\Organization\LegalEntityScope;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -31,8 +32,19 @@ class EmployeeDocumentController extends Controller
         $actor = $request->user();
         abort_unless($actor instanceof User, 403);
         $record = EmployeeDocument::query()
-            ->visibleTo($actor)
             ->where('public_id', $document)
+            ->where(function ($query) use ($actor): void {
+                if ($actor->employee_id !== null) {
+                    $query->where('employee_id', $actor->employee_id);
+                } else {
+                    $query->whereRaw('1 = 0');
+                }
+
+                $scopeIds = app(LegalEntityScope::class)->idsFor($actor);
+                if ($scopeIds !== []) {
+                    $query->orWhereIn('legal_entity_id', $scopeIds);
+                }
+            })
             ->firstOrFail();
         $this->authorize('download', $record);
 

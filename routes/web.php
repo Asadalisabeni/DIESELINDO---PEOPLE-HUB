@@ -5,7 +5,11 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeDocumentController;
 use App\Http\Controllers\EmploymentAssignmentController;
+use App\Http\Controllers\EssChangeRequestController;
+use App\Http\Controllers\EssDashboardController;
+use App\Http\Controllers\EssProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NotificationCenterController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\UserAccessController;
@@ -52,6 +56,19 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/employees/{employee}/contracts', [ContractController::class, 'store'])->name('employees.contracts.store');
     Route::post('/employees/{employee}/documents', [EmployeeDocumentController::class, 'store'])->name('employees.documents.store');
     Route::get('/employee-documents/{document}/download', [EmployeeDocumentController::class, 'download'])->name('employee-documents.download');
+
+    Route::get('/ess', EssDashboardController::class)->name('ess.dashboard');
+    Route::put('/ess/profile/contact', [EssProfileController::class, 'update'])->name('ess.profile.contact.update');
+    Route::get('/ess/requests', [EssChangeRequestController::class, 'index'])->name('ess.requests.index');
+    Route::post('/ess/requests', [EssChangeRequestController::class, 'store'])->name('ess.requests.store');
+    Route::get('/ess/requests/{changeRequest}', [EssChangeRequestController::class, 'show'])->name('ess.requests.show');
+    Route::delete('/ess/requests/{changeRequest}', [EssChangeRequestController::class, 'cancel'])->name('ess.requests.cancel');
+    Route::get('/ess-review', [EssChangeRequestController::class, 'reviewIndex'])->name('ess.review.index');
+    Route::put('/ess-review/{changeRequest}', [EssChangeRequestController::class, 'review'])->name('ess.review.update');
+
+    Route::get('/notifications', [NotificationCenterController::class, 'index'])->name('notifications.index');
+    Route::patch('/notifications/read-all', [NotificationCenterController::class, 'readAll'])->name('notifications.read-all');
+    Route::patch('/notifications/{notification}/read', [NotificationCenterController::class, 'read'])->name('notifications.read');
 });
 
 Route::post('/locale', function (Request $request): RedirectResponse {

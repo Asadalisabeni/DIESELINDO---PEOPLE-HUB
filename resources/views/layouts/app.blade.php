@@ -65,6 +65,18 @@
 
                 <p class="mt-7 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">{{ __('ui.nav.people') }}</p>
                 <ul class="mt-2 space-y-1">
+                    @if (auth()->user()->employee && auth()->user()->can('viewSelfService', auth()->user()->employee))
+                        <li>
+                            <a href="{{ route('ess.dashboard') }}" @class([
+                                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                                'bg-white/10 text-white shadow-sm' => request()->routeIs('ess.dashboard', 'ess.requests.*'),
+                                'text-slate-400 hover:bg-white/5 hover:text-white' => ! request()->routeIs('ess.dashboard', 'ess.requests.*'),
+                            ])>
+                                <x-icon name="home" />
+                                <span>{{ __('ui.nav.self_service') }}</span>
+                            </a>
+                        </li>
+                    @endif
                     @can('employees.view')
                         <li>
                             <a href="{{ route('employees.index') }}" @class([
@@ -129,6 +141,18 @@
                             </a>
                         </li>
                     @endcan
+                    @if (auth()->user()->can('ess.profile-change.review') && auth()->user()->legalEntityAccess()->where('access_level', 'manage')->effectiveOn(now()->toDateString())->exists())
+                        <li>
+                            <a href="{{ route('ess.review.index') }}" @class([
+                                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                                'bg-white/10 text-white shadow-sm' => request()->routeIs('ess.review.*'),
+                                'text-slate-400 hover:bg-white/5 hover:text-white' => ! request()->routeIs('ess.review.*'),
+                            ])>
+                                <x-icon name="inbox" />
+                                <span>{{ __('ui.nav.ess_review') }}</span>
+                            </a>
+                        </li>
+                    @endif
                     @can('audit.view')
                         <li>
                             <a href="{{ route('audit.index') }}" @class([
@@ -203,9 +227,13 @@
                         <span x-show="$store.theme.dark" x-cloak><x-icon name="sun" /></span>
                     </button>
 
-                    <button type="button" class="relative rounded-lg border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-white/10" aria-label="{{ __('ui.a11y.notifications') }}" disabled>
-                        <x-icon name="bell" />
-                    </button>
+                    @can('notifications.view')
+                        <a href="{{ route('notifications.index') }}" class="relative rounded-lg border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-white/10" aria-label="{{ __('ui.a11y.notifications') }}">
+                            <x-icon name="bell" />
+                            @php($unreadNotificationCount = auth()->user()->unreadNotifications()->count())
+                            @if ($unreadNotificationCount > 0)<span class="absolute -right-1.5 -top-1.5 min-w-5 rounded-full bg-brand-600 px-1 text-center text-[10px] font-black leading-5 text-white dark:bg-brand-400 dark:text-navy-950">{{ $unreadNotificationCount > 99 ? '99+' : $unreadNotificationCount }}</span>@endif
+                        </a>
+                    @endcan
 
                     <div class="hidden items-center gap-3 border-l border-slate-200 pl-3 xl:flex dark:border-slate-700">
                         <span class="grid size-9 place-items-center rounded-lg bg-navy-100 text-xs font-black text-navy-800 dark:bg-brand-500 dark:text-navy-950">PH</span>

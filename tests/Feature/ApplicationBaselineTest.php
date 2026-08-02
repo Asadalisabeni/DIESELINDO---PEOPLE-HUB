@@ -28,8 +28,8 @@ test('the home page renders the shared application layout', function () {
         ->assertSee('<footer', false)
         ->assertSee('Lewati ke konten utama')
         ->assertSee('Dieselindo PeopleHub')
-        ->assertSee('Phase 4 terkunci')
-        ->assertSee('Fondasi kerja yang konsisten');
+        ->assertSee('Phase 5 terkunci')
+        ->assertSee('Ruang kerja karyawan yang terhubung');
 });
 
 test('guests are redirected to the secure login page', function () {

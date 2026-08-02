@@ -107,6 +107,18 @@ class Employee extends Model
         return $this->hasMany(EmployeeBpjsProfile::class)->latest('effective_from');
     }
 
+    /** @return HasMany<EmployeeFamilyMember, $this> */
+    public function familyMembers(): HasMany
+    {
+        return $this->hasMany(EmployeeFamilyMember::class)->latest('effective_from');
+    }
+
+    /** @return HasMany<EmployeeProfileChangeRequest, $this> */
+    public function profileChangeRequests(): HasMany
+    {
+        return $this->hasMany(EmployeeProfileChangeRequest::class)->latest('submitted_at');
+    }
+
     /** @return HasOne<User, $this> */
     public function user(): HasOne
     {
