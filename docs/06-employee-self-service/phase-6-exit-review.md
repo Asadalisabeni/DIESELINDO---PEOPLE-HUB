@@ -32,7 +32,8 @@ Project/UAT Lead dan seluruh exit gate selesai.
   telah dihentikan; port 8877 serta project MES tidak disentuh.
 - PENDING — authenticated employee/reviewer browser QA untuk contact update,
   request submit, approve/reject, notification, attachment, mobile, dan keyboard;
-  database bisnis masih kosong dan administrator belum dapat diprovision.
+  administrator sudah terprovision, tetapi legal entity, employee master, dan
+  explicit account-to-employee linking belum tersedia.
 - PASS — GitHub Actions draft PR #17 run `30762360484`: frontend build/audit dan
   PHP quality/MySQL migration hijau.
 
@@ -46,8 +47,9 @@ Project/UAT Lead dan seluruh exit gate selesai.
 - Malware scanning, object storage, retention, legal hold, dan email notification
   belum menjadi bagian local baseline.
 - Attendance, leave, overtime, payslip, dan payroll tetap mengikuti phase roadmap.
-- Pembuatan administrator lokal masih menunggu password yang memenuhi policy
-  terkunci Phase 4; policy tidak boleh diturunkan atau dilewati.
+- Administrator lokal telah dibuat melalui secure bootstrap dengan policy Phase
+  4 utuh, active/verified status, Super Admin role, 29 effective permissions,
+  initialized password hash, dan immutable bootstrap audit event.
 
 ## Git checkpoint
 

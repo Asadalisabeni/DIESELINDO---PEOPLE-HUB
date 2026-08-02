@@ -53,6 +53,10 @@ Terakhir diperbarui: 3 Agustus 2026 (Asia/Jakarta)
   sementara telah dihentikan; port `8877` dan project MES tidak disentuh.
 - GitHub Actions draft PR #17: PASS — run `30762360484`; frontend build/audit
   serta PHP quality/MySQL migration hijau.
+- Local administrator bootstrap: PASS — tepat satu active/verified Super Admin,
+  29 effective permissions, initialized password hash, dan satu immutable
+  `bootstrap_admin_created` audit event. Password tidak disimpan pada file,
+  argument proses, environment variable, atau source control.
 - Authenticated ESS/reviewer browser QA masih menjadi exit gate.
 
 ### Local QA recovery note Phase 5
@@ -83,22 +87,20 @@ project lain tidak disentuh.
 
 ## Open gates
 
-1. Password administrator lokal yang memenuhi policy minimal 12 karakter dengan
-   huruf besar, huruf kecil, angka, dan simbol. Nilai terakhir ditolak karena
-   tidak memenuhi seluruh policy dan tidak disimpan.
-2. Real HR master data, explicit `users.employee_id` linking, serta authenticated
+1. Real HR master data, explicit `users.employee_id` linking, serta authenticated
    employee/reviewer QA untuk contact update, request, review, notification,
    attachment, mobile, dan keyboard pada browser normal.
-3. HR validation untuk request types, required evidence, bank duplicate policy,
+2. HR validation untuk request types, required evidence, bank duplicate policy,
    family relationship code, dan employment manual follow-up SOP.
-4. Malware scanner/private object storage, retention/legal hold, dan named data
+3. Malware scanner/private object storage, retention/legal hold, dan named data
    owner sebelum staging.
-5. Explicit stakeholder review dan pernyataan lock sebelum merge/promote/tag
+4. Explicit stakeholder review dan pernyataan lock sebelum merge/promote/tag
    Phase 6.
 
 ## Next authorized step
 
-Draft PR #17 sudah terbuka ke `develop` dan CI hijau. Provision administrator
-hanya setelah credential compliant tersedia, lalu selesaikan authenticated
-browser/UAT dengan HR master data yang valid. Tunggu review Project/UAT Lead;
-jangan merge atau membuat tag `phase-6-complete` sebelum lock eksplisit.
+Draft PR #17 sudah terbuka ke `develop`, CI hijau, dan administrator lokal sudah
+terprovision dengan policy Phase 4. Lengkapi real HR master data serta explicit
+account-to-employee linking, lalu selesaikan authenticated employee/reviewer
+browser UAT. Tunggu review Project/UAT Lead; jangan merge atau membuat tag
+`phase-6-complete` sebelum lock eksplisit.
