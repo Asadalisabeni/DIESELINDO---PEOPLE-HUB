@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserAccessRequest;
 use App\Http\Requests\UpdateUserAccessRequest;
+use App\Models\LegalEntity;
 use App\Models\User;
+use App\Services\Organization\LegalEntityScope;
 use App\Support\Iam\RoleMatrix;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -15,7 +17,7 @@ use Illuminate\Validation\ValidationException;
 
 class UserAccessController extends Controller
 {
-    public function index(): View
+    public function index(LegalEntityScope $scope): View
     {
         $this->authorize('viewAny', User::class);
         $actor = request()->user();
@@ -23,7 +25,7 @@ class UserAccessController extends Controller
         abort_unless($actor instanceof User, 403);
 
         $roles = RoleMatrix::assignableRoleNames($actor);
-        $usersQuery = User::query()->with('roles')->orderBy('name');
+        $usersQuery = User::query()->with(['roles', 'legalEntityAccess.legalEntity'])->orderBy('name');
 
         if (! $actor->hasRole('Super Admin')) {
             $usersQuery->whereDoesntHave(
@@ -33,8 +35,12 @@ class UserAccessController extends Controller
         }
 
         $users = $usersQuery->paginate(20);
+        $legalEntities = LegalEntity::query()
+            ->whereIn('id', $scope->idsFor($actor))
+            ->orderBy('display_name')
+            ->get();
 
-        return view('iam.index', compact('users', 'roles'));
+        return view('iam.index', compact('users', 'roles', 'legalEntities'));
     }
 
     public function store(StoreUserAccessRequest $request): RedirectResponse

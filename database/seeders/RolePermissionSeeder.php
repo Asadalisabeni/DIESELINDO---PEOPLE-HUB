@@ -18,6 +18,8 @@ class RolePermissionSeeder extends Seeder
             Permission::findOrCreate($permission, 'web');
         }
 
+        app(PermissionRegistrar::class)->forgetCachedPermissions();
+
         foreach (RoleMatrix::ROLES as $roleName => $permissions) {
             Role::findOrCreate($roleName, 'web')->syncPermissions($permissions);
         }

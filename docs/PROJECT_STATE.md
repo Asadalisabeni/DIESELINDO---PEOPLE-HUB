@@ -4,75 +4,102 @@ Terakhir diperbarui: 2 Agustus 2026 (Asia/Jakarta)
 
 ## Status
 
-- Current phase: Phase 3 — Design system dan UI foundation, review candidate.
-- Phase 0 gate: disetujui Project/UAT Lead pada 28 Juli 2026.
-- Phase 1 gate: disetujui Project/UAT Lead pada 2 Agustus 2026; tag
-  `phase-1-complete`.
-- Phase 2 gate: disetujui dan dikunci Project/UAT Lead pada 2 Agustus 2026;
-  tag `phase-2-complete` menunjuk main SHA
-  `0b9cdaecf88a21c289a33f6469ea3c740f3289d1`.
-- Phase 3 checkpoint: menunggu visual review dan pernyataan lock Project/UAT
-  Lead.
-- Git workflow: `feature/phase-3-design-system` → draft PR `develop` → `main`
-  setelah approval.
-- Laravel Framework: 13.23.0; PHP: 8.3.30; MySQL lokal: 8.4.3.
-- Frontend: Blade, Tailwind CSS 4, Alpine.js 3.15.12,
-  `@alpinejs/focus` 3.15.12, Vite 7.
+- Current phase: Phase 5 — Organization dan Core HR, implementation/review
+  candidate.
+- Phase 0, Phase 1, dan Phase 2 telah disetujui serta dikunci.
+- Phase 3 telah disetujui dan dikunci; tag `phase-3-complete` menunjuk main SHA
+  `cd1b25bfd39b04c50b9611a90c1a6dc7db8163f5`.
+- Phase 4 telah disetujui dan dikunci melalui PR #13 dan PR #14. Tag anotasi
+  `phase-4-complete` menunjuk main SHA
+  `8410dc38ebac7a8c0083825f6c985a548a0e35e8`.
+- Phase 5 branch: `feature/phase-5-organization-core-hr`, dibuat tepat dari tag
+  `phase-4-complete`.
+- Git author/tagger wajib tetap persis `As'ad Alisabeni
+  <sabeni706@gmail.com>`; apostrof tidak boleh hilang.
+- Laravel Framework 13, PHP 8.3, MySQL 8, Blade, Tailwind CSS 4, Alpine.js, dan
+  Vite tetap menjadi baseline.
 
-## Phase 3 review candidate
+## Phase 5 implementation candidate
 
-- Configurable deep-navy/industrial-orange/slate branding dan code-native mark.
-- Semantic light/dark token, system-first typography, shadow, surface, border,
-  dan text hierarchy.
-- Responsive application shell dengan desktop sidebar, mobile off-canvas,
-  sticky topbar, breadcrumb, footer, dan disabled future navigation.
-- Blade components untuk button, badge, alert, form control, state panel,
-  skeleton, modal, drawer, toast, brand, dan icon.
-- Responsive table serta keyboard tabs reference pattern.
-- Loading, empty, error, permission-denied, confirmation, dan validation state.
-- Dark mode mengikuti system preference dan menyimpan pilihan eksplisit tanpa
-  data sensitif.
-- Translation framework `id`/`en` dengan middleware, CSRF POST allowlist, dan
-  catalog key parity test.
-- Accessibility baseline: semantic landmarks, skip link, focus-visible,
-  labelled controls, ARIA relationships, focus trap, live region, serta mobile
-  sidebar `inert`/`aria-hidden`.
+- Organization: legal entity, branch, optional division, department, position,
+  work location, dan cost center.
+- Explicit effective-dated `user_legal_entity_access` dengan level
+  `view/manage`; Super Admin tidak mempunyai row scope implisit.
+- Employee identity, encrypted contact/emergency data, current assignment cache,
+  dan effective-dated employment histories.
+- Cross-entity transfer menulis history dan membutuhkan manage scope pada entity
+  asal serta tujuan.
+- Contract history/renewal, private employee documents, dan encrypted
+  bank/tax/BPJS profiles berstatus pending verification.
+- NIK dan identifier restricted memakai encryption, domain-separated HMAC blind
+  index, last-four masking, serta audit allowlist.
+- UI bilingual organization, employee directory/create/detail, IAM entity
+  scope, dashboard metrics, dark mode, dan responsive application shell.
 
-## Verification evidence
+## Verification evidence saat ini
 
+- Phase 5 migration MySQL: batch 3, `Ran`.
+- Role/permission seeder lokal: 10 role, 23 permission, idempotent cache reset.
+- Larastan/PHPStan: PASS — 0 error.
 - Pint: PASS.
-- Larastan/PHPStan level 8: PASS — 0 error.
-- Full Pest suite: PASS — 15 tests, 200 assertions.
-- Phase 3 UI suite: PASS — 7 tests, 63 assertions.
-- Vite production build: PASS — 57 modules transformed.
-- npm audit setelah dependency install: PASS — 0 vulnerability.
-- Browser desktop 1440×1000 light/dark: PASS.
-- Browser mobile 390×844: PASS, tidak ada horizontal overflow.
-- Locale, tabs, modal, drawer, toast, mobile sidebar: PASS.
-- Browser console: PASS, tidak ada error.
-- `php artisan migrate:status`: tiga migration `[1] Ran`; Phase 3 tidak
-  menambah migration/data.
+- Phase 5 feature/security suite: PASS — 18 tests, 135 assertions.
+- Full Pest suite: PASS — 49 tests, 440 assertions.
+- Blade compile dan route registration: PASS.
+- Vite production build, Composer strict validation, Composer audit, dan npm
+  audit: PASS; dependency audit menemukan 0 vulnerability.
+- Public browser flow: PASS untuk render/login bilingual, native required-field
+  validation, forgot-password copy, landmark, desktop geometry, dan console.
+  In-app browser memblokir asset JavaScript lokal (`ERR_BLOCKED_BY_CLIENT`) dan
+  mengabaikan viewport override, sehingga dark-mode/Alpine, mobile, serta
+  authenticated browser QA tetap harus diuji di browser normal setelah admin
+  tersedia.
+- Test feature sekarang fail fast bila Laravel config cache aktif, sebelum trait
+  database berjalan.
+
+### Local QA recovery note
+
+Pada verifikasi 2 Agustus 2026, config production yang masih tercache membuat
+satu invocation `RefreshDatabase` membangun ulang schema lokal PeopleHub.
+Sebelum kejadian, `users`, `legal_entities`, dan `employees` masing-masing 0;
+tidak ada account atau data HR yang hilang. Lima authentication event lokal,
+empat guest session, serta cache/role seed lokal terhapus. Batch migration telah
+dipulihkan tepat ke 1/2/3 dan RolePermissionSeeder mengembalikan 10 role, 23
+permission, serta 91 mapping. Guard di `tests/TestCase.php` kini mencegah test
+berjalan saat config cache aktif. Database/project lain tidak disentuh.
 
 ## Architecture dan security invariants
 
-- Tenant row, UTC/date, effective interval, public ULID, decimal, immutable
-  payroll/audit, dan sensitive-data controls dari Phase 2 tetap berlaku.
-- Menu tersembunyi/disabled bukan authorization. Phase 4 wajib server-side
-  Policy/Gate/permission dan negative security tests.
-- Translation dan theme preference tidak boleh menyimpan data pribadi/sensitif.
-- External font/CDN/image tidak digunakan pada baseline UI.
+- Public resource URL memakai ULID; numeric ID internal tidak menjadi URL
+  employee/document.
+- Capability, legal-entity scope, access level, row policy, dan field
+  classification semuanya harus lolos. Penyembunyian menu bukan authorization.
+- Scope `view` tidak boleh melakukan mutation walaupun role mempunyai update
+  capability. Mutation membutuhkan effective scope `manage`.
+- Assignment/contact/profile memakai interval `[effective_from, effective_to)`;
+  history lama tidak dihapus ketika nilai baru berlaku.
+- Restricted/confidential values tidak masuk log, audit properties, URL,
+  fixtures production, atau public storage.
+- Employee document hanya tersedia melalui authorized controller dan selalu
+  diaudit saat download.
+- Payroll, salary rule, PPh 21, dan BPJS calculation belum diimplementasikan;
+  profil Phase 5 tidak boleh dianggap payroll-verified.
 
-## Open implementation gates
+## Open gates
 
-1. Visual sign-off Project/UAT Lead untuk Phase 3.
-2. Logo dan brand guide resmi perusahaan.
-3. Nama stakeholder/data/security/risk owner serta approver.
-4. Legal entity/organization master dan code lists.
-5. SOP/policy attendance, leave, overtime, payroll, retention, dan privacy.
-6. Audit screen reader/contrast formal sebelum production.
+1. Password administrator lokal yang memenuhi policy minimal 12 karakter;
+   credential sebelumnya ditolak policy dan tidak disimpan.
+2. HR validation untuk legal entity resmi, organization code list, nomor kontrak,
+   employment status, document types, dan initial master data.
+3. Named data/security owner, retention/legal hold decision, dan production
+   blind-index key ownership.
+4. Malware scanner/private object storage decision sebelum staging.
+5. Authenticated/dark/mobile browser QA di browser normal dan GitHub Actions
+   evidence untuk Phase 5.
+6. Explicit stakeholder review dan pernyataan lock sebelum merge/promote/tag.
 
 ## Next authorized step
 
-Review Phase 3 melalui route `/` dan `/design-system`. Setelah Project/UAT Lead
-menyatakan lock, promote ke `develop`/`main`, tag `phase-3-complete`, kemudian
-mulai Phase 4 — Authentication, role, permission, dan audit.
+Selesaikan full quality dan browser QA Phase 5, provision administrator setelah
+credential compliant tersedia, commit/push ke draft PR, lalu tunggu review
+Project/UAT Lead. Jangan mulai Phase 6 ESS sebelum Phase 5 dinyatakan locked dan
+tag `phase-5-complete` dibuat pada main yang telah lulus CI.

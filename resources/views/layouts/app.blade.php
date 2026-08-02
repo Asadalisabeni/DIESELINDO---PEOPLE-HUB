@@ -65,8 +65,19 @@
 
                 <p class="mt-7 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">{{ __('ui.nav.people') }}</p>
                 <ul class="mt-2 space-y-1">
+                    @can('employees.view')
+                        <li>
+                            <a href="{{ route('employees.index') }}" @class([
+                                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                                'bg-white/10 text-white shadow-sm' => request()->routeIs('employees.*'),
+                                'text-slate-400 hover:bg-white/5 hover:text-white' => ! request()->routeIs('employees.*'),
+                            ])>
+                                <x-icon name="users" />
+                                <span>{{ __('ui.nav.employees') }}</span>
+                            </a>
+                        </li>
+                    @endcan
                     @foreach ([
-                        ['users', 'employees'],
                         ['clock', 'attendance'],
                         ['calendar', 'leave'],
                         ['wallet', 'payroll'],
@@ -84,6 +95,18 @@
 
                 <p class="mt-7 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">{{ __('ui.nav.administration') }}</p>
                 <ul class="mt-2 space-y-1">
+                    @can('viewAny', App\Models\LegalEntity::class)
+                        <li>
+                            <a href="{{ route('organization.index') }}" @class([
+                                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                                'bg-white/10 text-white shadow-sm' => request()->routeIs('organization.*'),
+                                'text-slate-400 hover:bg-white/5 hover:text-white' => ! request()->routeIs('organization.*'),
+                            ])>
+                                <x-icon name="grid" />
+                                <span>{{ __('ui.nav.organization') }}</span>
+                            </a>
+                        </li>
+                    @endcan
                     <li>
                         <a href="{{ route('security.index') }}" @class([
                             'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',

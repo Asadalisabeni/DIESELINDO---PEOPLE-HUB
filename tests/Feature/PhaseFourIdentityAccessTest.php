@@ -2,6 +2,7 @@
 
 use App\Models\AuthenticationEvent;
 use App\Models\User;
+use App\Support\Iam\RoleMatrix;
 use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -164,7 +165,7 @@ test('the role seeder is idempotent and grants least privilege', function () {
     $this->seed(RolePermissionSeeder::class);
 
     expect(Role::query()->count())->toBe(10)
-        ->and(Permission::query()->count())->toBe(15);
+        ->and(Permission::query()->count())->toBe(count(RoleMatrix::PERMISSIONS));
 
     $employee = User::factory()->create();
     $employee->assignRole('Employee');
