@@ -74,7 +74,7 @@ test('users can switch between the supported interface languages', function () {
     $this->get('/home')
         ->assertOk()
         ->assertSee('<html lang="en" class="h-full">', false)
-        ->assertSee('A consistent workplace foundation')
+        ->assertSee('Your connected employee workspace')
         ->assertSee('Skip to main content');
 });
 

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\EmployeeStatus;
 use App\Models\Employee;
 use App\Models\LegalEntity;
 use App\Models\User;
@@ -49,5 +50,22 @@ class EmployeePolicy
     public function uploadDocument(User $user, Employee $employee): bool
     {
         return $user->can('documents.upload') && $this->scope->manages($user, (int) $employee->legal_entity_id);
+    }
+
+    public function viewSelfService(User $user, Employee $employee): bool
+    {
+        return $user->can('ess.access')
+            && (int) $user->employee_id === (int) $employee->getKey()
+            && EmployeeStatus::tryFrom((string) $employee->getRawOriginal('status')) === EmployeeStatus::Active;
+    }
+
+    public function updateSelfService(User $user, Employee $employee): bool
+    {
+        return $user->can('ess.profile.update') && $this->viewSelfService($user, $employee);
+    }
+
+    public function requestProfileChange(User $user, Employee $employee): bool
+    {
+        return $user->can('ess.profile-change.request') && $this->viewSelfService($user, $employee);
     }
 }

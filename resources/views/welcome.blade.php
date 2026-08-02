@@ -12,6 +12,12 @@
                 <h1 id="page-title" class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">{{ __('ui.home.title') }}</h1>
                 <p class="mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">{{ __('ui.home.description') }}</p>
                 <div class="mt-7 flex flex-wrap gap-3">
+                    @if (auth()->user()->employee && auth()->user()->can('viewSelfService', auth()->user()->employee))
+                    <x-button :href="route('ess.dashboard')">
+                        {{ __('ui.nav.self_service') }}
+                        <x-icon name="arrow-right" size="4" />
+                    </x-button>
+                    @endif
                     @can('viewAny', App\Models\LegalEntity::class)
                     <x-button :href="route('organization.index')">
                         {{ __('ui.nav.organization') }}
