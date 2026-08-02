@@ -61,6 +61,45 @@
                     </div>
                     <x-button type="submit" variant="secondary">{{ __('ui.actions.save') }}</x-button>
                 </form>
+                @can('entity-access.manage')
+                    <div class="px-6 pb-6">
+                        <div class="surface-muted rounded-xl p-4">
+                            <h3 class="text-sm font-bold text-primary">{{ __('auth.legal_entity_scope') }}</h3>
+                            <div class="mt-3 flex flex-wrap gap-2">
+                                @forelse ($managedUser->legalEntityAccess as $access)
+                                    <details class="rounded-lg border border-slate-200 px-3 py-2 dark:border-slate-700">
+                                        <summary class="cursor-pointer text-xs font-bold text-primary">
+                                            {{ $access->legalEntity->code }} · {{ $access->access_level }} · {{ $access->effective_from->format('d M Y') }} — {{ $access->effective_to?->format('d M Y') ?? '∞' }}
+                                        </summary>
+                                        @if (! $access->effective_to || $access->effective_to->isFuture())
+                                            <form method="POST" action="{{ route('iam.entity-access.end', $access->getKey()) }}" class="mt-3 grid gap-3 sm:grid-cols-[180px_1fr_auto] sm:items-end">
+                                                @csrf @method('PUT')
+                                                <x-form.input name="effective_to" type="date" :label="__('employee.effective_to')" :value="now()->addDay()->format('Y-m-d')" required />
+                                                <x-form.input name="reason" :label="__('employee.change_reason')" required />
+                                                <x-button type="submit" variant="danger">{{ __('auth.end_scope') }}</x-button>
+                                            </form>
+                                        @endif
+                                    </details>
+                                @empty
+                                    <span class="text-sm text-secondary">{{ __('auth.no_entity_scope') }}</span>
+                                @endforelse
+                            </div>
+                            @if ($legalEntities->isNotEmpty())
+                                <form method="POST" action="{{ route('iam.entity-access.store', $managedUser) }}" class="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-[1.2fr_.7fr_.8fr_.8fr_1.2fr_auto] xl:items-end">
+                                    @csrf
+                                    <x-form.select name="legal_entity_public_id" :label="__('employee.legal_entity')">
+                                        @foreach ($legalEntities as $entity)<option value="{{ $entity->public_id }}">{{ $entity->code }} · {{ $entity->display_name }}</option>@endforeach
+                                    </x-form.select>
+                                    <x-form.select name="access_level" :label="__('auth.access_level')"><option value="manage">{{ __('auth.access_manage') }}</option><option value="view">{{ __('auth.access_view') }}</option></x-form.select>
+                                    <x-form.input name="effective_from" type="date" :label="__('employee.effective_from')" :value="now()->format('Y-m-d')" required />
+                                    <x-form.input name="effective_to" type="date" :label="__('employee.effective_to')" />
+                                    <x-form.input name="reason" :label="__('employee.change_reason')" required />
+                                    <x-button type="submit">{{ __('auth.grant_scope') }}</x-button>
+                                </form>
+                            @endif
+                        </div>
+                    </div>
+                @endcan
             @endforeach
         </div>
         <div class="border-t border-slate-200 p-5 dark:border-slate-700">{{ $users->links() }}</div>

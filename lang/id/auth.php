@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'legal_entity_scope' => 'Scope legal entity',
+    'no_entity_scope' => 'Belum ada scope legal entity.',
+    'access_level' => 'Tingkat akses',
+    'access_manage' => 'Kelola',
+    'access_view' => 'Lihat',
+    'grant_scope' => 'Berikan scope',
+    'end_scope' => 'Akhiri scope',
+    'entity_access_overlap' => 'Periode scope tersebut tumpang tindih dengan penugasan yang sudah ada.',
+    'entity_access_granted' => 'Scope legal entity berhasil diberikan.',
+    'entity_access_ended' => 'Scope legal entity berhasil diakhiri berdasarkan tanggal efektif.',
     'failed' => 'Email atau kata sandi tidak sesuai.',
     'password' => 'Kata sandi yang dimasukkan tidak benar.',
     'throttle' => 'Terlalu banyak percobaan masuk. Coba lagi dalam :seconds detik.',

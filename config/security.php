@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'blind_index_key' => env('PEOPLEHUB_BLIND_INDEX_KEY', env('APP_KEY')),
+
     'login' => [
         'max_attempts' => (int) env('IAM_MAX_LOGIN_ATTEMPTS', 5),
         'rate_limit_per_minute' => (int) env('IAM_LOGIN_RATE_LIMIT', 5),
