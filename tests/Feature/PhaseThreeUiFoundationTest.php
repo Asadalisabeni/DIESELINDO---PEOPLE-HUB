@@ -1,6 +1,14 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
+
+uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    $this->actingAs(User::factory()->create());
+});
 
 test('the phase three review package contains every required document', function () {
     $documents = [
@@ -45,7 +53,7 @@ test('the design system renders every required component family and state', func
 });
 
 test('the application shell provides the accessibility baseline', function () {
-    $this->get('/')
+    $this->get('/home')
         ->assertOk()
         ->assertSee('href="#main-content"', false)
         ->assertSee('aria-label="Navigasi utama"', false)
@@ -57,13 +65,13 @@ test('the application shell provides the accessibility baseline', function () {
 });
 
 test('users can switch between the supported interface languages', function () {
-    $this->from('/')
+    $this->from('/home')
         ->post('/locale', ['locale' => 'en'])
-        ->assertRedirect('/');
+        ->assertRedirect('/home');
 
     expect(session('locale'))->toBe('en');
 
-    $this->get('/')
+    $this->get('/home')
         ->assertOk()
         ->assertSee('<html lang="en" class="h-full">', false)
         ->assertSee('A consistent workplace foundation')
@@ -71,13 +79,13 @@ test('users can switch between the supported interface languages', function () {
 });
 
 test('unsupported interface languages are rejected and invalid session values fail closed', function () {
-    $this->from('/')
+    $this->from('/home')
         ->post('/locale', ['locale' => 'fr'])
-        ->assertRedirect('/')
+        ->assertRedirect('/home')
         ->assertSessionHasErrors('locale');
 
     $this->withSession(['locale' => 'fr'])
-        ->get('/')
+        ->get('/home')
         ->assertOk()
         ->assertSee('<html lang="id" class="h-full">', false);
 
