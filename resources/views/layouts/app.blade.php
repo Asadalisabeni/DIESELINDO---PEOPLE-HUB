@@ -83,14 +83,41 @@
                 </ul>
 
                 <p class="mt-7 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">{{ __('ui.nav.administration') }}</p>
-                <ul class="mt-2">
+                <ul class="mt-2 space-y-1">
                     <li>
-                        <span class="flex cursor-not-allowed items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-600" aria-disabled="true">
-                            <x-icon name="settings" />
-                            <span class="flex-1">{{ __('ui.nav.settings') }}</span>
-                            <span class="rounded bg-white/5 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500">{{ __('ui.nav.soon') }}</span>
-                        </span>
+                        <a href="{{ route('security.index') }}" @class([
+                            'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                            'bg-white/10 text-white shadow-sm' => request()->routeIs('security.*'),
+                            'text-slate-400 hover:bg-white/5 hover:text-white' => ! request()->routeIs('security.*'),
+                        ])>
+                            <x-icon name="lock" />
+                            <span>{{ __('ui.nav.security') }}</span>
+                        </a>
                     </li>
+                    @can('iam.manage')
+                        <li>
+                            <a href="{{ route('iam.users.index') }}" @class([
+                                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                                'bg-white/10 text-white shadow-sm' => request()->routeIs('iam.*'),
+                                'text-slate-400 hover:bg-white/5 hover:text-white' => ! request()->routeIs('iam.*'),
+                            ])>
+                                <x-icon name="users" />
+                                <span>{{ __('ui.nav.access_management') }}</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('audit.view')
+                        <li>
+                            <a href="{{ route('audit.index') }}" @class([
+                                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                                'bg-white/10 text-white shadow-sm' => request()->routeIs('audit.*'),
+                                'text-slate-400 hover:bg-white/5 hover:text-white' => ! request()->routeIs('audit.*'),
+                            ])>
+                                <x-icon name="chart" />
+                                <span>{{ __('ui.nav.audit') }}</span>
+                            </a>
+                        </li>
+                    @endcan
                 </ul>
             </nav>
 
@@ -160,10 +187,17 @@
                     <div class="hidden items-center gap-3 border-l border-slate-200 pl-3 xl:flex dark:border-slate-700">
                         <span class="grid size-9 place-items-center rounded-lg bg-navy-100 text-xs font-black text-navy-800 dark:bg-brand-500 dark:text-navy-950">PH</span>
                         <span class="leading-tight">
-                            <span class="block text-sm font-bold text-primary">{{ __('ui.app.foundation') }}</span>
-                            <span class="block text-xs text-secondary">{{ __('ui.topbar.guest') }}</span>
+                            <span class="block max-w-40 truncate text-sm font-bold text-primary">{{ auth()->user()->name }}</span>
+                            <span class="block max-w-40 truncate text-xs text-secondary">{{ auth()->user()->getRoleNames()->first() ?? __('auth.no_role') }}</span>
                         </span>
                     </div>
+
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-white/10">
+                            {{ __('auth.logout') }}
+                        </button>
+                    </form>
                 </div>
             </header>
 

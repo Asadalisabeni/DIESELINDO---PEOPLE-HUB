@@ -1,5 +1,10 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
+
 test('the application uses the approved peoplehub baseline', function () {
     expect(config('app.name'))->toBe('Dieselindo PeopleHub')
         ->and(config('app.timezone'))->toBe('Asia/Jakarta')
@@ -11,7 +16,9 @@ test('the application uses the approved peoplehub baseline', function () {
 });
 
 test('the home page renders the shared application layout', function () {
-    $this->get('/')
+    $this->actingAs(User::factory()->create());
+
+    $this->get('/home')
         ->assertOk()
         ->assertViewIs('welcome')
         ->assertSee('<html lang="id" class="h-full">', false)
@@ -21,6 +28,11 @@ test('the home page renders the shared application layout', function () {
         ->assertSee('<footer', false)
         ->assertSee('Lewati ke konten utama')
         ->assertSee('Dieselindo PeopleHub')
-        ->assertSee('Phase 2 terkunci')
+        ->assertSee('Phase 3 terkunci')
         ->assertSee('Fondasi kerja yang konsisten');
+});
+
+test('guests are redirected to the secure login page', function () {
+    $this->get('/')
+        ->assertRedirect(route('login'));
 });
