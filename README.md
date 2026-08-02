@@ -5,7 +5,7 @@ dan anak perusahaan. Sistem dirancang sebagai modular monolith berbasis Laravel
 untuk Core HR, ESS, attendance, leave, overtime, payroll, statutory, approval,
 reporting, notification, audit, dan data migration.
 
-Status saat ini: **Phase 3 — Design system dan UI foundation**.
+Status saat ini: **Phase 3 — Design system dan UI foundation (review candidate)**.
 
 Baseline Phase 0 telah disetujui pada 28 Juli 2026. Phase 1 diselesaikan dan
 disetujui pada 2 Agustus 2026 dengan Laravel 13, MySQL 8.4, Pest, Larastan,
@@ -39,6 +39,12 @@ belum dipasang.
 - [Multi-company dan security model](docs/02-architecture/multi-company-security-model.md)
 - [Phase 2 exit review](docs/02-architecture/phase-2-exit-review.md)
 - [Architecture Decision Records](docs/adr/)
+
+## Dokumen Phase 3
+
+- [Design system](docs/03-design-system/design-system.md)
+- [Accessibility, theme, dan i18n](docs/03-design-system/accessibility-i18n.md)
+- [Phase 3 exit review candidate](docs/03-design-system/phase-3-exit-review.md)
 
 ## Local verification
 

@@ -28,6 +28,9 @@ dan 1–3 rendah.
 | R-020 | Generic approval subject menjadi orphan atau salah entity karena tidak memiliki FK langsung ke seluruh tabel bisnis. | 2 | 4 | 8 | Engineering + Process owner | Allowlisted subject registry, existence/entity validation, immutable summary snapshot, reconciliation dan integration tests. |
 | R-021 | Encryption/blind-index key salah kelola sehingga data bocor atau tidak dapat dicari/dipulihkan. | 3 | 5 | 15 | Security + IT | External versioned keys, keyed blind index, rotation/restore plan, environment separation, audit dan break-glass control. |
 | R-022 | Queue, export, report, atau CLI melewati legal-entity scope meski UI/HTTP sudah aman. | 3 | 5 | 15 | Engineering + Security | Explicit `LegalEntityScope`, service identity capability, scope snapshot/recheck, no serialized actor/model, negative tests semua entry point. |
+| R-023 | Tim menganggap menu disabled/hidden sebagai authorization sehingga endpoint Phase 4 tidak terlindungi. | 3 | 5 | 15 | Engineering + Security | Dokumentasikan UI bukan security control; wajib Gate/Policy/permission dan negative test pada server. |
+| R-024 | Translation key, focus behavior, atau responsive layout regresi saat modul baru menambah komponen. | 3 | 3 | 9 | Engineering + QA | Shared Blade component, locale-key parity test, accessibility contract test, visual QA desktop/mobile setiap milestone. |
+| R-025 | Baseline visual dianggap brand final padahal logo/brand guide resmi belum disetujui. | 2 | 3 | 6 | Product owner + Management | Tandai configurable, gunakan semantic tokens/code-native mark, lakukan visual sign-off dan asset replacement review. |
 
 ## Review cadence
 
@@ -52,3 +55,12 @@ dan 1–3 rendah.
 - R-019–R-022: treatment desain tersedia, tetapi residual score baru boleh
   diturunkan setelah implementation, concurrency/negative tests, key rotation,
   dan owner sign-off.
+
+## Phase 3 treatment review
+
+- R-023: seluruh future navigation nonaktif dan dokumentasi/test menegaskan
+  bahwa UI bukan authorization; residual tetap sampai Phase 4 negative tests.
+- R-024: shared component, `id`/`en` key parity, accessibility assertions, dan
+  desktop/mobile browser QA sudah menjadi baseline.
+- R-025: configurable brand token dan code-native mark menjaga perubahan brand
+  tetap terisolasi; visual sign-off masih open gate.

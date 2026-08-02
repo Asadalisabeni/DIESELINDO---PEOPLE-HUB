@@ -1,35 +1,186 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="color-scheme" content="light">
+        <meta name="color-scheme" content="light dark">
+        <meta name="theme-color" content="#101b2d">
 
         <title>@hasSection('title')@yield('title') — @endif{{ config('app.name') }}</title>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased">
-        <a href="#main-content" class="sr-only rounded-md bg-white px-4 py-2 text-slate-950 focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50">
-            Lewati ke konten utama
+    <body
+        x-data="{ sidebarOpen: false, desktop: window.matchMedia('(min-width: 1024px)').matches }"
+        x-init="const media = window.matchMedia('(min-width: 1024px)'); media.addEventListener('change', event => { desktop = event.matches; if (desktop) sidebarOpen = false })"
+        x-on:keydown.escape.window="sidebarOpen = false"
+        class="min-h-full font-sans antialiased"
+    >
+        <a href="#main-content" class="sr-only rounded-lg bg-white px-4 py-2.5 font-bold text-navy-950 shadow-overlay focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70]">
+            {{ __('ui.a11y.skip_to_content') }}
         </a>
 
-        <header class="border-b border-slate-200 bg-white" aria-label="Header aplikasi">
-            <div class="mx-auto flex h-16 max-w-7xl items-center px-6 lg:px-8">
-                <a href="{{ url('/') }}" class="font-semibold tracking-tight text-slate-950">
-                    {{ config('app.name') }}
+        <div x-show="sidebarOpen" x-cloak x-transition.opacity class="fixed inset-0 z-40 bg-navy-950/70 backdrop-blur-sm lg:hidden" x-on:click="sidebarOpen = false"></div>
+
+        <aside
+            id="application-sidebar"
+            class="fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col bg-navy-950 text-slate-200 shadow-overlay transition-transform duration-300 lg:translate-x-0 lg:shadow-none"
+            :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+            :aria-hidden="desktop || sidebarOpen ? 'false' : 'true'"
+            :inert="! desktop && ! sidebarOpen"
+        >
+            <div class="flex h-20 shrink-0 items-center justify-between border-b border-white/10 px-5">
+                <a href="{{ route('home') }}" aria-label="{{ __('ui.app.name') }}">
+                    <x-brand />
                 </a>
+                <button type="button" x-on:click="sidebarOpen = false" class="rounded-lg p-2 text-slate-400 hover:bg-white/10 hover:text-white lg:hidden" aria-label="{{ __('ui.a11y.close_navigation') }}">
+                    <x-icon name="x" />
+                </button>
             </div>
-        </header>
 
-        <main id="main-content" tabindex="-1">
-            @yield('content')
-        </main>
+            <nav class="flex-1 overflow-y-auto px-4 py-5" aria-label="{{ __('ui.a11y.primary_navigation') }}">
+                <p class="px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">{{ __('ui.nav.workspace') }}</p>
+                <ul class="mt-2 space-y-1">
+                    <li>
+                        <a href="{{ route('home') }}" @class([
+                            'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                            'bg-white/10 text-white shadow-sm' => request()->routeIs('home'),
+                            'text-slate-400 hover:bg-white/5 hover:text-white' => ! request()->routeIs('home'),
+                        ]) @if(request()->routeIs('home')) aria-current="page" @endif>
+                            <x-icon name="home" />
+                            <span>{{ __('ui.nav.overview') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('design-system') }}" @class([
+                            'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                            'bg-white/10 text-white shadow-sm' => request()->routeIs('design-system'),
+                            'text-slate-400 hover:bg-white/5 hover:text-white' => ! request()->routeIs('design-system'),
+                        ]) @if(request()->routeIs('design-system')) aria-current="page" @endif>
+                            <x-icon name="grid" />
+                            <span>{{ __('ui.nav.design_system') }}</span>
+                        </a>
+                    </li>
+                </ul>
 
-        <footer class="border-t border-slate-200 bg-white">
-            <div class="mx-auto max-w-7xl px-6 py-5 text-sm text-slate-500 lg:px-8">
-                &copy; {{ now()->year }} PT Dieselindo Utama Nusa
+                <p class="mt-7 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">{{ __('ui.nav.people') }}</p>
+                <ul class="mt-2 space-y-1">
+                    @foreach ([
+                        ['users', 'employees'],
+                        ['clock', 'attendance'],
+                        ['calendar', 'leave'],
+                        ['wallet', 'payroll'],
+                        ['chart', 'reports'],
+                    ] as [$icon, $label])
+                        <li>
+                            <span class="flex cursor-not-allowed items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-600" aria-disabled="true">
+                                <x-icon :name="$icon" />
+                                <span class="flex-1">{{ __('ui.nav.'.$label) }}</span>
+                                <span class="rounded bg-white/5 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500">{{ __('ui.nav.soon') }}</span>
+                            </span>
+                        </li>
+                    @endforeach
+                </ul>
+
+                <p class="mt-7 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-500">{{ __('ui.nav.administration') }}</p>
+                <ul class="mt-2">
+                    <li>
+                        <span class="flex cursor-not-allowed items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-600" aria-disabled="true">
+                            <x-icon name="settings" />
+                            <span class="flex-1">{{ __('ui.nav.settings') }}</span>
+                            <span class="rounded bg-white/5 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-slate-500">{{ __('ui.nav.soon') }}</span>
+                        </span>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="border-t border-white/10 p-4">
+                <div class="rounded-xl bg-white/5 p-3">
+                    <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
+                        <span class="size-2 rounded-full bg-emerald-400 shadow-[0_0_0_3px_rgba(52,211,153,.12)]"></span>
+                        {{ __('ui.app.environment') }}
+                    </div>
+                    <p class="mt-2 text-xs leading-5 text-slate-500">{{ __('ui.footer.privacy') }}</p>
+                </div>
             </div>
-        </footer>
+        </aside>
+
+        <div class="min-h-screen lg:pl-72">
+            <header class="surface-panel sticky top-0 z-30 border-b">
+                <div class="flex h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
+                    <button
+                        type="button"
+                        x-on:click="sidebarOpen = true"
+                        class="-ml-2 rounded-lg p-2 text-secondary hover:bg-slate-100 hover:text-primary lg:hidden dark:hover:bg-white/10"
+                        aria-controls="application-sidebar"
+                        :aria-expanded="sidebarOpen"
+                        aria-label="{{ __('ui.a11y.open_navigation') }}"
+                    >
+                        <x-icon name="menu" size="6" />
+                    </button>
+
+                    <div class="min-w-0 flex-1">
+                        <nav aria-label="{{ __('ui.a11y.breadcrumbs') }}" class="hidden items-center gap-2 text-xs font-semibold text-slate-500 sm:flex dark:text-slate-400">
+                            <span>{{ __('ui.topbar.workspace') }}</span>
+                            <span aria-hidden="true">/</span>
+                            <span class="text-slate-700 dark:text-slate-200" aria-current="page">@yield('page-title', __('ui.nav.overview'))</span>
+                        </nav>
+                        <p class="truncate text-sm font-bold text-primary sm:hidden">@yield('page-title-mobile', __('ui.nav.overview'))</p>
+                    </div>
+
+                    <button type="button" class="hidden min-w-64 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-left text-sm text-slate-500 transition hover:border-slate-300 md:flex dark:border-slate-700 dark:bg-navy-950 dark:text-slate-400 dark:hover:border-slate-600" aria-label="{{ __('ui.topbar.search') }}" disabled>
+                        <x-icon name="search" size="4" />
+                        <span class="flex-1 truncate">{{ __('ui.topbar.search') }}</span>
+                        <kbd class="rounded border border-slate-200 bg-white px-1.5 py-0.5 font-mono text-[10px] dark:border-slate-600 dark:bg-navy-900">{{ __('ui.topbar.search_shortcut') }}</kbd>
+                    </button>
+
+                    <form method="POST" action="{{ route('locale.update') }}" class="hidden sm:block">
+                        @csrf
+                        <label for="locale" class="sr-only">{{ __('ui.topbar.language') }}</label>
+                        <select id="locale" name="locale" onchange="this.form.submit()" class="rounded-lg border border-slate-200 bg-white px-2.5 py-2 text-sm font-bold text-slate-700 dark:border-slate-700 dark:bg-navy-950 dark:text-slate-200">
+                            <option value="id" @selected(app()->getLocale() === 'id')>ID</option>
+                            <option value="en" @selected(app()->getLocale() === 'en')>EN</option>
+                        </select>
+                    </form>
+
+                    <button
+                        type="button"
+                        x-on:click="$store.theme.toggle()"
+                        class="rounded-lg border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-50 hover:text-slate-950 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
+                        :aria-label="$store.theme.dark ? @js(__('ui.theme.light')) : @js(__('ui.theme.dark'))"
+                    >
+                        <span x-show="! $store.theme.dark"><x-icon name="moon" /></span>
+                        <span x-show="$store.theme.dark" x-cloak><x-icon name="sun" /></span>
+                    </button>
+
+                    <button type="button" class="relative rounded-lg border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-white/10" aria-label="{{ __('ui.a11y.notifications') }}" disabled>
+                        <x-icon name="bell" />
+                    </button>
+
+                    <div class="hidden items-center gap-3 border-l border-slate-200 pl-3 xl:flex dark:border-slate-700">
+                        <span class="grid size-9 place-items-center rounded-lg bg-navy-100 text-xs font-black text-navy-800 dark:bg-brand-500 dark:text-navy-950">PH</span>
+                        <span class="leading-tight">
+                            <span class="block text-sm font-bold text-primary">{{ __('ui.app.foundation') }}</span>
+                            <span class="block text-xs text-secondary">{{ __('ui.topbar.guest') }}</span>
+                        </span>
+                    </div>
+                </div>
+            </header>
+
+            <main id="main-content" tabindex="-1" class="px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+                <div class="mx-auto max-w-[1440px]">
+                    @yield('content')
+                </div>
+            </main>
+
+            <footer class="px-4 pb-8 sm:px-6 lg:px-8">
+                <div class="mx-auto flex max-w-[1440px] flex-col gap-2 border-t border-slate-200 pt-5 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:text-slate-400">
+                    <p>© {{ now()->year }} {{ __('ui.app.company') }}</p>
+                    <p>{{ __('ui.footer.baseline') }}</p>
+                </div>
+            </footer>
+        </div>
+
+        <x-toast-region />
     </body>
 </html>

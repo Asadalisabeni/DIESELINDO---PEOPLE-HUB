@@ -42,6 +42,13 @@
 | DEC-036 | Audit bersifat append-only dan redacted. Restricted identifiers dienkripsi dengan masked suffix dan keyed blind index bila perlu lookup; file tetap private dan akses/view/export diaudit. |
 | DEC-037 | Akun database staging/production dipisah menjadi migrator, runtime, worker, report reader, backup, dan monitor dengan least privilege; local Laragon root bukan baseline deployment. |
 | DEC-038 | Phase 2 logical architecture baseline disetujui Project/UAT Lead pada 2 Agustus 2026 setelah module boundary, tujuh ADR, ERD, data dictionary, tenancy/security model, dan automated documentation consistency checks selesai. |
+| DEC-039 | Phase 3 memakai configurable visual baseline deep navy, industrial orange, dan slate. Code-native mark dipakai sampai logo/brand guide resmi disetujui. |
+| DEC-040 | Typography memakai system-first `Aptos`/`Segoe UI Variable` stack tanpa external font/CDN untuk performa, privacy, dan offline resilience. |
+| DEC-041 | UI primitives memakai Blade component; Alpine.js 3.15.12 menangani state ringan dan plugin fokus resminya menangani focus trap/inert overlay. Livewire ditunda sampai ada server-driven vertical slice. |
+| DEC-042 | Interface locale hanya `id` dan `en`, disimpan dalam session, diterapkan middleware, dan fail-closed ke `id`. Catalog key parity menjadi automated gate. |
+| DEC-043 | Theme mengikuti system preference sampai pengguna memilih; pilihan `light`/`dark` disimpan pada local storage tanpa data sensitif. |
+| DEC-044 | Mobile off-canvas navigation wajib `aria-hidden` dan `inert` ketika tertutup; overlay wajib memiliki accessible name, focus trap, Escape/backdrop close, dan scroll lock. |
+| DEC-045 | Phase 3 review candidate tidak mengimplementasikan authorization. Disabled/hidden navigation tidak boleh dianggap security control; Policy/Gate/permission tetap Phase 4. |
 
 ## B. Baseline configurable yang belum boleh dianggap kebijakan production
 
