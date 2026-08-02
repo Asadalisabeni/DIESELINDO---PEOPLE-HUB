@@ -1,6 +1,16 @@
 <?php
 
 return [
+    'legal_entity_scope' => 'Legal entity scope',
+    'no_entity_scope' => 'No legal entity scope has been assigned.',
+    'access_level' => 'Access level',
+    'access_manage' => 'Manage',
+    'access_view' => 'View',
+    'grant_scope' => 'Grant scope',
+    'end_scope' => 'End scope',
+    'entity_access_overlap' => 'That scope period overlaps an existing assignment.',
+    'entity_access_granted' => 'Legal entity scope was granted.',
+    'entity_access_ended' => 'Legal entity scope was ended by effective date.',
     'failed' => 'The email or password is incorrect.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',

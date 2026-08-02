@@ -31,6 +31,14 @@ final class RoleMatrix
         'reports.export',
         'audit.view',
         'iam.manage',
+        'organization.view',
+        'organization.manage',
+        'entity-access.manage',
+        'documents.view',
+        'documents.upload',
+        'documents.download',
+        'contracts.manage',
+        'employee-financial.view',
     ];
 
     /** @var array<string, list<string>> */
@@ -40,30 +48,38 @@ final class RoleMatrix
             'employees.view', 'employees.create', 'employees.update', 'employees.view-sensitive',
             'salaries.view', 'salaries.update', 'payroll.prepare', 'payroll.review',
             'payslips.publish', 'reports.export', 'audit.view', 'iam.manage',
+            'organization.view', 'organization.manage', 'entity-access.manage',
+            'documents.view', 'documents.upload', 'documents.download', 'contracts.manage',
+            'employee-financial.view',
         ],
         'Company HR Admin' => [
             'employees.view', 'employees.create', 'employees.update', 'employees.view-sensitive',
             'salaries.view', 'payroll.prepare', 'payslips.publish', 'reports.export',
+            'organization.view', 'organization.manage',
+            'documents.view', 'documents.upload', 'documents.download', 'contracts.manage',
+            'employee-financial.view',
         ],
         'Payroll Administrator' => [
             'employees.view', 'employees.view-sensitive', 'salaries.view', 'salaries.update',
             'payroll.prepare', 'payslips.publish', 'reports.export',
+            'organization.view', 'employee-financial.view',
         ],
         'Finance Reviewer' => [
-            'salaries.view', 'payroll.review', 'reports.export',
+            'salaries.view', 'payroll.review', 'reports.export', 'organization.view', 'employee-financial.view',
         ],
         'Final Payroll Approver' => [
-            'salaries.view', 'payroll.approve', 'payroll.lock', 'reports.export',
+            'salaries.view', 'payroll.approve', 'payroll.lock', 'reports.export', 'organization.view',
         ],
         'Branch Manager' => [
-            'employees.view', 'reports.export',
+            'employees.view', 'reports.export', 'organization.view',
         ],
         'Supervisor' => [
-            'employees.view',
+            'employees.view', 'organization.view',
         ],
         'Employee' => [],
         'Auditor' => [
             'employees.view', 'employees.view-sensitive', 'salaries.view', 'reports.export', 'audit.view',
+            'organization.view', 'documents.view', 'documents.download', 'employee-financial.view',
         ],
     ];
 

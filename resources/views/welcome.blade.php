@@ -12,10 +12,12 @@
                 <h1 id="page-title" class="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">{{ __('ui.home.title') }}</h1>
                 <p class="mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">{{ __('ui.home.description') }}</p>
                 <div class="mt-7 flex flex-wrap gap-3">
-                    <x-button :href="route('design-system')">
-                        {{ __('ui.actions.view_components') }}
+                    @can('viewAny', App\Models\LegalEntity::class)
+                    <x-button :href="route('organization.index')">
+                        {{ __('ui.nav.organization') }}
                         <x-icon name="arrow-right" size="4" />
                     </x-button>
+                    @endcan
                     <x-badge variant="success" class="px-3 py-2">
                         <span class="size-1.5 rounded-full bg-emerald-500"></span>
                         {{ __('ui.home.status_value') }}
@@ -71,11 +73,21 @@
             </div>
         </div>
 
-        <x-state-panel
-            variant="empty"
-            :title="__('ui.home.business_data_title')"
-            :description="__('ui.home.business_data_description')"
-            class="shadow-panel"
-        />
+        <div class="surface-panel rounded-2xl border p-6 shadow-panel">
+            <h2 class="text-xl font-bold text-primary">{{ __('ui.home.business_data_title') }}</h2>
+            <p class="mt-2 text-sm leading-6 text-secondary">{{ __('ui.home.business_data_description') }}</p>
+            <dl class="mt-6 space-y-4">
+                @foreach ([
+                    ['legal_entities', 'legal_entities_metric'],
+                    ['active_employees', 'active_employees_metric'],
+                    ['contracts_expiring', 'expiring_contracts_metric'],
+                ] as [$key, $label])
+                    <div class="surface-muted flex items-center justify-between rounded-xl px-4 py-3">
+                        <dt class="text-sm font-semibold text-secondary">{{ __('ui.home.'.$label) }}</dt>
+                        <dd class="text-xl font-black text-primary">{{ $organizationMetrics[$key] }}</dd>
+                    </div>
+                @endforeach
+            </dl>
+        </div>
     </section>
 @endsection
