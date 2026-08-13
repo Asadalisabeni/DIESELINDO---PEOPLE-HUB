@@ -28,6 +28,8 @@ return [
         'ess_review' => 'ESS review queue',
         'organization' => 'Organization structure',
         'attendance' => 'Attendance',
+        'attendance_admin' => 'Attendance configuration',
+        'attendance_review' => 'Attendance review',
         'leave' => 'Leave & permits',
         'payroll' => 'Payroll',
         'reports' => 'Reports',
@@ -46,6 +48,7 @@ return [
         'language' => 'Language',
     ],
     'theme' => [
+        'toggle' => 'Toggle color mode',
         'dark' => 'Enable dark mode',
         'light' => 'Enable light mode',
     ],

@@ -38,7 +38,7 @@
                                     <option value="en" @selected(app()->getLocale() === 'en')>EN</option>
                                 </select>
                             </form>
-                            <button type="button" x-data x-on:click="$store.theme.toggle()" class="rounded-lg border border-slate-200 p-2 text-slate-600 dark:border-slate-700 dark:text-slate-300" aria-label="{{ __('ui.theme.dark') }}">
+                            <button type="button" x-data x-on:click="$store.theme.toggle()" class="rounded-lg border border-slate-200 p-2 text-slate-600 dark:border-slate-700 dark:text-slate-300" aria-label="{{ __('ui.theme.toggle') }}">
                                 <x-icon name="moon" />
                             </button>
                         </div>

@@ -28,6 +28,8 @@ return [
         'ess_review' => 'Antrean review ESS',
         'organization' => 'Struktur organisasi',
         'attendance' => 'Kehadiran',
+        'attendance_admin' => 'Konfigurasi kehadiran',
+        'attendance_review' => 'Review kehadiran',
         'leave' => 'Cuti & izin',
         'payroll' => 'Payroll',
         'reports' => 'Laporan',
@@ -46,6 +48,7 @@ return [
         'language' => 'Bahasa',
     ],
     'theme' => [
+        'toggle' => 'Ganti mode warna',
         'dark' => 'Aktifkan mode gelap',
         'light' => 'Aktifkan mode terang',
     ],

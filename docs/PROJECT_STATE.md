@@ -1,106 +1,108 @@
 # Project State
 
-Terakhir diperbarui: 3 Agustus 2026 (Asia/Jakarta)
+Terakhir diperbarui: 13 Agustus 2026 (Asia/Jakarta)
 
 ## Status
 
-- Current phase: Phase 6 — Employee Self-Service, implementation/review candidate.
-- Phase 0 sampai Phase 4 telah disetujui dan dikunci.
-- Phase 5 telah disetujui dan dikunci melalui PR #15 dan PR #16. Tag anotasi
-  `phase-5-complete` menunjuk main SHA
-  `43c8162658e2d036b6af1d5970cbc14fdc7007a7`.
-- Phase 6 branch: `feature/phase-6-employee-self-service`, dibuat tepat dari tag
-  `phase-5-complete`.
+- Current phase: Phase 7 — Attendance, implementation/review candidate.
+- Phase 0 sampai Phase 6 telah disetujui dan dikunci.
+- Phase 6 dipromosikan melalui PR #19 ke `main`; annotated tag
+  `phase-6-complete` menunjuk tepat ke main SHA
+  `f163652be8b35279309cf4f444ebf08844bfa03c`. Push checks run
+  `30766693871` lulus untuk PHP/MySQL dan frontend build/audit.
+- Phase 7 branch: `feature/phase-7-attendance`, dibuat tepat dari tag
+  `phase-6-complete`.
 - Git author/tagger wajib tetap persis `As'ad Alisabeni
   <sabeni706@gmail.com>`; apostrof tidak boleh hilang.
 - Laravel Framework 13, PHP 8.3, MySQL 8, Blade, Tailwind CSS 4, Alpine.js, dan
   Vite tetap menjadi baseline.
 
-## Phase 6 implementation candidate
+## Phase 7 implementation candidate
 
-- Employee portal memakai explicit `users.employee_id` self-scope dan tidak
-  memberikan administrative legal-entity scope kepada employee.
-- Profile menampilkan identity/current assignment serta bank/tax/BPJS dalam
-  last-four masking.
-- Phone/address/emergency dapat diperbarui langsung dengan encrypted,
-  effective-dated history dan audit allowlist.
-- Nama resmi, status perkawinan, bank, tax/PTKP, BPJS, keluarga, identity
-  document, dan employment correction memakai encrypted change request.
-- Request memakai anti-stale HMAC fingerprint, single-pending type guard, row
-  lock, cancellation, approve/reject, reviewer notes, dan timestamp lifecycle.
-- Review HR membutuhkan `ess.profile-change.review` dan manage scope efektif
-  pada entity request; cross-company detail gagal aman sebagai 404.
-- Evidence berada pada private employee document storage. Notification database
-  memakai translation key dan public request ID tanpa sensitive payload.
-- Employment correction yang disetujui ditandai manual follow-up dan tidak
-  melewati effective-dated Core HR assignment workflow.
+- Effective schedule mendukung prioritas employee, department, branch, lalu
+  legal entity; timezone, jam kerja, break, grace, hari kerja, dan hari libur
+  merupakan konfigurasi, bukan production policy hardcoded.
+- Attendance source abstraction mencakup fingerprint, mobile GPS, web, offline,
+  manual adjustment, dan import dengan validation thresholds tanpa secret.
+- Raw event append-only menyimpan server/device timestamps, unique external ID,
+  idempotency hash, encrypted GPS/field/device metadata, anomaly, dan payload
+  integrity hash.
+- Daily normalized attendance mempertahankan actual punch, scheduled context,
+  late/early/worked minutes, numbered versions, supersedes link, dan explicit
+  payroll readiness. Tidak ada potongan payroll otomatis.
+- Offline browser queue menyimpan payload minimum, tidak menyimpan selfie/note/
+  customer text, menghapus item setelah sync, dan menggunakan retry idempoten.
+- Correction membutuhkan direct-manager approval lalu scoped HR approval,
+  anti-stale fingerprint, encrypted old/new/review data, private evidence, dan
+  membuat normalized version baru tanpa mengubah raw event.
+- Solution X100C tersedia sebagai canonical CSV reconciliation PoC. Project tidak
+  mengklaim integrasi real-time, ADMS, SDK, protocol, atau direct DB sebelum
+  technical spike dengan perangkat nyata terbukti.
+- Employee, review, dan admin attendance UI tersedia dalam Indonesia/Inggris dan
+  memakai permission plus explicit legal-entity scope.
 
 ## Verification evidence saat ini
 
-- Phase 6 route registration dan Blade compilation: PASS.
-- Larastan/PHPStan: PASS — 0 error tanpa suppression.
-- Pint: PASS.
-- Phase 6 feature/security suite: PASS — 12 tests, 90 assertions.
-- Full Pest suite: PASS — 61 tests, 530 assertions.
-- Real MySQL upgrade: PASS — migration Phase 6 tercatat pada batch 4.
-- Role/permission seed: PASS — 10 roles, 29 permissions, 144 mappings.
-- Vite production build: PASS — 57 modules transformed.
-- Composer strict validation dan audit: PASS — 0 vulnerability.
-- npm audit: PASS — 0 vulnerability.
-- Browser publik: PASS — login, forgot-password, ID/EN switch, dark-mode
-  interaction, CSS/JavaScript assets, anonymous `/ess` redirect, dan console
-  tanpa warning/error telah diverifikasi pada `127.0.0.1:8085`. Server QA
-  sementara telah dihentikan; port `8877` dan project MES tidak disentuh.
-- GitHub Actions draft PR #17: PASS — run `30762360484`; frontend build/audit
-  serta PHP quality/MySQL migration hijau.
-- Local administrator bootstrap: PASS — tepat satu active/verified Super Admin,
-  29 effective permissions, initialized password hash, dan satu immutable
-  `bootstrap_admin_created` audit event. Password tidak disimpan pada file,
-  argument proses, environment variable, atau source control.
-- Authenticated ESS/reviewer browser QA masih menjadi exit gate.
-
-### Local QA recovery note Phase 5
-
-Pada verifikasi 2 Agustus 2026, config production yang masih tercache membuat
-satu invocation `RefreshDatabase` membangun ulang schema lokal PeopleHub.
-Sebelum kejadian, `users`, `legal_entities`, dan `employees` masing-masing 0;
-tidak ada account atau data HR yang hilang. Lima authentication event lokal,
-empat guest session, serta cache/role seed lokal terhapus. Batch migration telah
-dipulihkan tepat ke 1/2/3 dan RolePermissionSeeder dipulihkan. Guard di
-`tests/TestCase.php` mencegah test berjalan saat config cache aktif. Database dan
-project lain tidak disentuh.
+- Phase 6 lock: PASS — PR #19 merged, main CI hijau, annotated tag
+  `phase-6-complete` terverifikasi.
+- Composer quality: PASS — Pint bersih, Larastan/PHPStan level 8 tanpa
+  suppression dan 0 error, serta full Pest 72 tests / 608 assertions.
+- Phase 7 feature/security suite: PASS — 11 tests / 78 assertions, termasuk
+  encrypted raw GPS/field data, configurable grace, idempotency, immutability,
+  anomaly block, correction versioning, cross-entity denial, dan X100C PoC.
+- Real MySQL upgrade: PASS — migration Phase 7 batch 5; seluruh 10 tabel
+  attendance terdeteksi. Tidak ada reset, fresh, rollback, atau penghapusan data.
+- Role/permission seed: PASS — 10 roles, 38 permissions, 199 mappings.
+- Route registration dan Blade compilation: PASS — 14 attendance routes dan
+  semua template berhasil dicache.
+- Vite production build: PASS — 58 modules transformed.
+- Composer strict validation: PASS. Composer audit: PASS, 0 advisory setelah
+  `league/commonmark` diperbarui dari 2.8.3 ke 2.10.0. npm audit: PASS, 0
+  vulnerability setelah transitive `nanoid` diperbarui ke 3.3.18.
+- Public browser QA: PASS — login ID/EN, theme interaction dan accessibility
+  label, viewport 375x812 tanpa horizontal overflow, guest redirect dari
+  attendance/admin, asset load, dan console tanpa warning/error. QA server
+  sementara pada port 8086 telah dihentikan.
+- Authenticated employee/manager/HR attendance browser UAT: PENDING karena
+  database bisnis lokal masih memiliki 0 legal entity dan 0 employee; account
+  administrator tidak diberi implicit entity atau employee scope.
+- Secret scan dan diff whitespace check: PASS; password administrator tidak
+  terdapat dalam source, docs, test, atau lockfile.
+- Project MES dan port 8877 tidak disentuh.
 
 ## Architecture dan security invariants
 
-- Public URL memakai ULID; numeric internal ID tidak menjadi employee/request/
-  document URL.
-- Self-scope dan administrative entity scope adalah dua jalur authorization yang
-  terpisah. Tidak ada pencocokan account otomatis berdasarkan email.
-- Capability, manage scope, row policy, field classification, encrypted storage,
-  masking, dan audit harus tetap diterapkan berlapis.
-- Restricted values tidak masuk audit, notification, URL, log, atau public
-  storage. Notification ownership selalu difilter melalui user relation.
-- Contact/profile memakai interval `[effective_from, effective_to)`; histori
-  lama tidak dihapus saat nilai baru berlaku.
-- Payroll, salary rule, PPh 21, BPJS calculation, attendance, dan leave belum
-  diimplementasikan dan tidak boleh dianggap tersedia.
+- Public URL memakai ULID; numeric internal ID tidak menjadi employee,
+  attendance, correction, document, atau import URL.
+- Self-scope dan administrative entity scope tetap menjadi dua jalur
+  authorization terpisah. Super Admin tidak memiliki implicit row-scope bypass.
+- Capability, effective manage scope, linked employee/manager identity,
+  encryption, private storage, idempotency, anomaly review, dan audit allowlist
+  diterapkan berlapis.
+- Raw attendance event tidak boleh di-update atau dihapus melalui application
+  model. Koreksi membuat normalized version baru.
+- Device time tidak dipercaya sendirian. Server receipt time selalu dicatat;
+  delayed offline, clock mismatch, GPS lemah/hilang, atau selfie wajib yang
+  hilang membuat anomaly dan payroll block.
+- Attendance, late total, dan correction Phase 7 tidak menghitung salary
+  deduction, overtime pay, tax, BPJS, atau final payroll eligibility.
 
 ## Open gates
 
-1. Real HR master data, explicit `users.employee_id` linking, serta authenticated
-   employee/reviewer QA untuk contact update, request, review, notification,
-   attachment, mobile, dan keyboard pada browser normal.
-2. HR validation untuk request types, required evidence, bank duplicate policy,
-   family relationship code, dan employment manual follow-up SOP.
-3. Malware scanner/private object storage, retention/legal hold, dan named data
-   owner sebelum staging.
-4. Explicit stakeholder review dan pernyataan lock sebelum merge/promote/tag
-   Phase 6.
+1. Approved HR schedule, grace/rounding, holiday, correction delegation/SLA, dan
+   downstream payroll eligibility policy.
+2. Exact Solution X100C model/firmware, vendor documentation, protocol/SDK/export
+   evidence, timezone/identifier behavior, dan sanitized device sample.
+3. GPS/geofence owner and policy; selfie consent/legal basis, retention/deletion,
+   malware scanning, private object storage, and incident response.
+4. Real HR master data, explicit employee-account linking, serta authenticated
+   employee/direct-manager/HR UAT pada desktop/mobile/keyboard dan offline flow.
+5. GitHub Actions pada draft PR serta review eksplisit Project/UAT Lead sebelum
+   merge atau lock Phase 7.
 
 ## Next authorized step
 
-Draft PR #17 sudah terbuka ke `develop`, CI hijau, dan administrator lokal sudah
-terprovision dengan policy Phase 4. Lengkapi real HR master data serta explicit
-account-to-employee linking, lalu selesaikan authenticated employee/reviewer
-browser UAT. Tunggu review Project/UAT Lead; jangan merge atau membuat tag
-`phase-6-complete` sebelum lock eksplisit.
+Quality gate lokal candidate telah hijau. Commit dengan identitas Git yang
+disetujui, push branch, buka draft PR ke `develop`, dan tunggu GitHub Actions.
+Jangan merge, promote, atau membuat tag `phase-7-complete` sebelum pernyataan
+lock eksplisit dari Project/UAT Lead.
