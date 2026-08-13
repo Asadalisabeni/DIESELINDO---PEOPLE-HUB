@@ -119,6 +119,30 @@ class Employee extends Model
         return $this->hasMany(EmployeeProfileChangeRequest::class)->latest('submitted_at');
     }
 
+    /** @return HasMany<EmployeeScheduleAssignment, $this> */
+    public function scheduleAssignments(): HasMany
+    {
+        return $this->hasMany(EmployeeScheduleAssignment::class)->latest('effective_from');
+    }
+
+    /** @return HasMany<AttendanceEvent, $this> */
+    public function attendanceEvents(): HasMany
+    {
+        return $this->hasMany(AttendanceEvent::class)->latest('occurred_at');
+    }
+
+    /** @return HasMany<AttendanceRecord, $this> */
+    public function attendanceRecords(): HasMany
+    {
+        return $this->hasMany(AttendanceRecord::class)->latest('work_date');
+    }
+
+    /** @return HasMany<AttendanceCorrection, $this> */
+    public function attendanceCorrections(): HasMany
+    {
+        return $this->hasMany(AttendanceCorrection::class)->latest('submitted_at');
+    }
+
     /** @return HasOne<User, $this> */
     public function user(): HasOne
     {

@@ -1,6 +1,7 @@
 import './bootstrap';
 import Alpine from 'alpinejs';
 import focus from '@alpinejs/focus';
+import './attendance-offline';
 
 const readStoredTheme = () => {
     try {
