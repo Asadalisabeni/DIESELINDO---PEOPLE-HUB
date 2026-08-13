@@ -68,8 +68,10 @@ Terakhir diperbarui: 13 Agustus 2026 (Asia/Jakarta)
 - Browser smoke QA: PASS — route ESS/review/admin menolak guest ke login,
   pergantian ID/EN dan dark mode bekerja, viewport 375x812 tanpa horizontal
   overflow, serta browser console tanpa warning/error.
-- Git/GitHub checkpoint Phase 9: menunggu commit, push, draft PR ke `develop`,
-  dan GitHub Actions dari candidate yang sama.
+- Git/GitHub checkpoint Phase 9: PASS — implementation commit
+  `c6f1c0bdfda208451cb72634d985d9f59189dc1b` ter-push ke
+  `feature/phase-9-overtime`, draft PR #27 menargetkan `develop`, dan initial CI
+  run `31680149045` lulus untuk frontend serta PHP quality/MySQL migration.
 - Database bisnis lokal masih 0 legal entity dan 0 employee; authenticated UAT
   memakai test suite isolated, bukan menyisipkan dummy data ke database bisnis.
 - Project MES dan port 8877 tidak disentuh.
@@ -106,6 +108,5 @@ Terakhir diperbarui: 13 Agustus 2026 (Asia/Jakarta)
 
 ## Next authorized step
 
-Commit dan push kandidat Phase 9, buka draft PR ke `develop`, tunggu seluruh
-GitHub Actions, lalu serahkan kepada Project/UAT Lead untuk review. Jangan merge,
-promote, atau membuat tag Phase 9 sebelum instruksi lock eksplisit.
+Project/UAT Lead meninjau draft PR #27 beserta UAT dan gate production di atas.
+Jangan merge, promote, atau membuat tag Phase 9 sebelum instruksi lock eksplisit.
