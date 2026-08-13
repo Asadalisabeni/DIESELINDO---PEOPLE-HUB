@@ -65,6 +65,10 @@ Terakhir diperbarui: 13 Agustus 2026 (Asia/Jakarta)
 - Browser smoke QA: PASS — route ESS/review/admin menolak guest ke login,
   pergantian ID/EN dan dark mode bekerja, viewport 375x812 tanpa horizontal
   overflow, serta browser console tanpa warning/error.
+- Git/GitHub checkpoint: PASS — diff dan secret audit bersih, implementation
+  commit `e826d1e11102f29a80ab9ec715c8a4ee65238866` ter-push ke
+  `feature/phase-8-leave`, draft PR #25 menargetkan `develop`, dan CI run
+  `31671997610` lulus untuk frontend serta PHP quality/MySQL migration.
 - Database bisnis lokal masih 0 legal entity dan 0 employee; authenticated UAT
   memakai test suite isolated, bukan menyisipkan dummy data ke database bisnis.
 - Project MES dan port 8877 tidak disentuh.
@@ -94,13 +98,10 @@ Terakhir diperbarui: 13 Agustus 2026 (Asia/Jakarta)
    Employee, Manager, HR, Payroll, Auditor pada desktop/mobile/keyboard/email.
 4. Malware scanning, private object storage, queued email sandbox, worker/scheduler
    monitoring, expiry rehearsal, and balance reconciliation with legacy data.
-5. GitHub Actions pada draft PR dan review eksplisit Project/UAT Lead sebelum
-   merge, promotion, atau tag `phase-8-complete`.
+5. Review eksplisit Project/UAT Lead pada draft PR #25 sebelum merge, promotion,
+   atau tag `phase-8-complete`; GitHub Actions kandidat awal telah lulus.
 
 ## Next authorized step
 
-Selesaikan frontend build, dependency/security audit, browser smoke test, secret
-dan Git diff audit. Setelah semua hijau: commit dengan identitas Git persis,
-push `feature/phase-8-leave`, buat draft PR ke `develop`, tunggu GitHub Actions,
-dan serahkan untuk review. Jangan merge atau membuat tag Phase 8 sebelum instruksi
-lock eksplisit Project/UAT Lead.
+Project/UAT Lead meninjau draft PR #25 beserta UAT dan gate production di atas.
+Jangan merge, promotion, atau membuat tag Phase 8 sebelum instruksi lock eksplisit.

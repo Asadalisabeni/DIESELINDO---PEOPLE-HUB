@@ -28,7 +28,9 @@ meninjau hasil, GitHub CI lulus, dan memberikan instruksi lock eksplisit.
   dengan 0 vulnerability.
 - PASS: browser smoke QA guest protection, ID/EN, dark mode, mobile 375x812 tanpa
   horizontal overflow, dan console tanpa warning/error.
-- PENDING: Git diff/secret audit, commit/push/draft PR, dan GitHub Actions.
+- PASS: Git diff/secret audit, implementation commit `e826d1e11102f29a80ab9ec715c8a4ee65238866`,
+  push `feature/phase-8-leave`, draft PR #25 ke `develop`, dan CI run
+  `31671997610` untuk frontend serta PHP quality/MySQL migration.
 
 ## Open production gates
 
