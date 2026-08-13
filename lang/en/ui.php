@@ -33,6 +33,9 @@ return [
         'leave' => 'Leave & permits',
         'leave_admin' => 'Leave configuration',
         'leave_review' => 'Leave approval queue',
+        'overtime' => 'Overtime',
+        'overtime_admin' => 'Overtime configuration',
+        'overtime_review' => 'Overtime workflow queue',
         'payroll' => 'Payroll',
         'reports' => 'Reports',
         'administration' => 'Administration',
@@ -69,8 +72,8 @@ return [
     ],
     'home' => [
         'title' => 'Your connected employee workspace',
-        'eyebrow' => 'Phase 8 · Leave & permits',
-        'description' => 'A secure employee workspace for self-service, attendance, leave balances, requests, and sequential approvals.',
+        'eyebrow' => 'Phase 9 · Overtime',
+        'description' => 'A secure workspace for planned overtime, sequential approval, actual attendance validation, and payroll eligibility.',
         'status_label' => 'Checkpoint status',
         'status_value' => 'Phase 5 locked',
         'foundation_label' => 'Active foundation',
@@ -165,7 +168,7 @@ return [
         'locked' => 'Locked',
     ],
     'footer' => [
-        'baseline' => 'Leave & permits · Phase 8',
+        'baseline' => 'Overtime · Phase 9',
         'privacy' => 'Business data is restricted by role and legal entity',
     ],
 ];

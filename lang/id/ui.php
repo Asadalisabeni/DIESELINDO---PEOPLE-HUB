@@ -33,6 +33,9 @@ return [
         'leave' => 'Cuti & izin',
         'leave_admin' => 'Konfigurasi cuti',
         'leave_review' => 'Antrean approval cuti',
+        'overtime' => 'Lembur',
+        'overtime_admin' => 'Konfigurasi lembur',
+        'overtime_review' => 'Antrean workflow lembur',
         'payroll' => 'Payroll',
         'reports' => 'Laporan',
         'administration' => 'Administrasi',
@@ -69,8 +72,8 @@ return [
     ],
     'home' => [
         'title' => 'Ruang kerja karyawan yang terhubung',
-        'eyebrow' => 'Phase 8 · Cuti & izin',
-        'description' => 'Workspace karyawan yang aman untuk self-service, kehadiran, saldo cuti, pengajuan, dan approval berurutan.',
+        'eyebrow' => 'Phase 9 · Lembur',
+        'description' => 'Workspace aman untuk rencana lembur, approval berurutan, validasi attendance aktual, dan kelayakan payroll.',
         'status_label' => 'Status checkpoint',
         'status_value' => 'Phase 5 terkunci',
         'foundation_label' => 'Fondasi aktif',
@@ -165,7 +168,7 @@ return [
         'locked' => 'Terkunci',
     ],
     'footer' => [
-        'baseline' => 'Cuti & izin · Phase 8',
+        'baseline' => 'Lembur · Phase 9',
         'privacy' => 'Data bisnis dibatasi berdasarkan role dan legal entity',
     ],
 ];

@@ -17,6 +17,9 @@ use App\Http\Controllers\LeaveController;
 use App\Http\Controllers\LeaveReviewController;
 use App\Http\Controllers\NotificationCenterController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\OvertimeAdminController;
+use App\Http\Controllers\OvertimeController;
+use App\Http\Controllers\OvertimeReviewController;
 use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\UserAccessController;
 use App\Http\Controllers\UserLegalEntityAccessController;
@@ -107,6 +110,18 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/leave-admin/delegations', [LeaveAdminController::class, 'storeDelegation'])->name('leave.admin.delegations.store');
     Route::put('/leave-admin/delegations/{delegation}/revoke', [LeaveAdminController::class, 'revokeDelegation'])->name('leave.admin.delegations.revoke');
     Route::get('/leave-admin/report.csv', [LeaveAdminController::class, 'export'])->name('leave.admin.report.export');
+
+    Route::get('/overtime', [OvertimeController::class, 'index'])->name('overtime.index');
+    Route::post('/overtime/requests', [OvertimeController::class, 'store'])->name('overtime.requests.store');
+    Route::delete('/overtime/requests/{overtimeRequest}', [OvertimeController::class, 'cancel'])->name('overtime.requests.cancel');
+    Route::get('/overtime-review', [OvertimeReviewController::class, 'index'])->name('overtime.review.index');
+    Route::put('/overtime-review/{overtimeRequest}', [OvertimeReviewController::class, 'review'])->name('overtime.review.update');
+
+    Route::get('/overtime-admin', [OvertimeAdminController::class, 'index'])->name('overtime.admin.index');
+    Route::post('/overtime-admin/rules', [OvertimeAdminController::class, 'storeRule'])->name('overtime.admin.rules.store');
+    Route::post('/overtime-admin/delegations', [OvertimeAdminController::class, 'storeDelegation'])->name('overtime.admin.delegations.store');
+    Route::put('/overtime-admin/delegations/{delegation}/revoke', [OvertimeAdminController::class, 'revokeDelegation'])->name('overtime.admin.delegations.revoke');
+    Route::get('/overtime-admin/report.csv', [OvertimeAdminController::class, 'export'])->name('overtime.admin.report.export');
 });
 
 Route::post('/locale', function (Request $request): RedirectResponse {

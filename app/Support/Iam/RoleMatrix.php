@@ -18,6 +18,8 @@ final class RoleMatrix
         'attendance.corrections.request',
         'leave.access',
         'leave.request',
+        'overtime.access',
+        'overtime.request',
     ];
 
     /** @var list<string> */
@@ -69,6 +71,14 @@ final class RoleMatrix
         'leave.adjust',
         'leave.report',
         'leave.confirm-payroll',
+        'overtime.team.view',
+        'overtime.team.request',
+        'overtime.approve-manager',
+        'overtime.view',
+        'overtime.manage',
+        'overtime.validate',
+        'overtime.include-payroll',
+        'overtime.report',
     ];
 
     /** @var array<string, list<string>> */
@@ -87,6 +97,8 @@ final class RoleMatrix
             'attendance.view', 'attendance.manage', 'attendance.corrections.review', 'attendance.import',
             'leave.team.view', 'leave.approve-manager', 'leave.view', 'leave.manage',
             'leave.review', 'leave.adjust', 'leave.report',
+            'overtime.team.view', 'overtime.team.request', 'overtime.approve-manager',
+            'overtime.view', 'overtime.manage', 'overtime.validate', 'overtime.report',
         ],
         'Company HR Admin' => [
             ...self::SELF_SERVICE_PERMISSIONS,
@@ -100,6 +112,8 @@ final class RoleMatrix
             'attendance.view', 'attendance.manage', 'attendance.corrections.review', 'attendance.import',
             'leave.team.view', 'leave.approve-manager', 'leave.view', 'leave.manage',
             'leave.review', 'leave.adjust', 'leave.report',
+            'overtime.team.view', 'overtime.team.request', 'overtime.approve-manager',
+            'overtime.view', 'overtime.manage', 'overtime.validate', 'overtime.report',
         ],
         'Payroll Administrator' => [
             ...self::SELF_SERVICE_PERMISSIONS,
@@ -108,10 +122,12 @@ final class RoleMatrix
             'organization.view', 'employee-financial.view',
             'attendance.view',
             'leave.view', 'leave.report', 'leave.confirm-payroll',
+            'overtime.view', 'overtime.report', 'overtime.include-payroll',
         ],
         'Finance Reviewer' => [
             ...self::SELF_SERVICE_PERMISSIONS,
             'salaries.view', 'payroll.review', 'reports.export', 'organization.view', 'employee-financial.view',
+            'overtime.view', 'overtime.report',
         ],
         'Final Payroll Approver' => [
             ...self::SELF_SERVICE_PERMISSIONS,
@@ -122,12 +138,14 @@ final class RoleMatrix
             'employees.view', 'reports.export', 'organization.view',
             'attendance.team.view', 'attendance.corrections.approve-manager', 'attendance.view',
             'leave.team.view', 'leave.approve-manager', 'leave.view', 'leave.report',
+            'overtime.team.view', 'overtime.team.request', 'overtime.approve-manager', 'overtime.view', 'overtime.report',
         ],
         'Supervisor' => [
             ...self::SELF_SERVICE_PERMISSIONS,
             'employees.view', 'organization.view',
             'attendance.team.view', 'attendance.corrections.approve-manager',
             'leave.team.view', 'leave.approve-manager',
+            'overtime.team.view', 'overtime.team.request', 'overtime.approve-manager',
         ],
         'Employee' => self::SELF_SERVICE_PERMISSIONS,
         'Auditor' => [
@@ -136,6 +154,7 @@ final class RoleMatrix
             'organization.view', 'documents.view', 'documents.download', 'employee-financial.view',
             'attendance.view',
             'leave.view', 'leave.report',
+            'overtime.view', 'overtime.report',
         ],
     ];
 

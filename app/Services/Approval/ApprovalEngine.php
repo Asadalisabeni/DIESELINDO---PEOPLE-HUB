@@ -26,6 +26,7 @@ class ApprovalEngine
 {
     public function __construct(private readonly LegalEntityScope $scope) {}
 
+    /** @param list<array{step_order: int, name: string, resolver_type: string, required_permission: string}>|null $stepBlueprints */
     public function createDefinition(
         User $actor,
         int $legalEntityId,
@@ -35,8 +36,9 @@ class ApprovalEngine
         bool $includePayrollStep = false,
         int $reminderAfterHours = 24,
         int $escalationAfterHours = 72,
+        ?array $stepBlueprints = null,
     ): ApprovalDefinition {
-        return DB::transaction(function () use ($actor, $legalEntityId, $key, $subjectType, $effectiveFrom, $includePayrollStep, $reminderAfterHours, $escalationAfterHours): ApprovalDefinition {
+        return DB::transaction(function () use ($actor, $legalEntityId, $key, $subjectType, $effectiveFrom, $includePayrollStep, $reminderAfterHours, $escalationAfterHours, $stepBlueprints): ApprovalDefinition {
             $existing = ApprovalDefinition::query()
                 ->where('legal_entity_id', $legalEntityId)->where('key', $key)
                 ->where('status', 'active')->lockForUpdate()->first();
@@ -57,15 +59,22 @@ class ApprovalEngine
                 'created_by' => $actor->getKey(),
             ]);
 
-            $steps = [
+            $steps = $stepBlueprints ?? [
                 ['step_order' => 1, 'name' => 'Direct manager', 'resolver_type' => 'direct_manager', 'required_permission' => 'leave.approve-manager'],
                 ['step_order' => 2, 'name' => 'HR validation', 'resolver_type' => 'scoped_permission', 'required_permission' => 'leave.review'],
             ];
-            if ($includePayrollStep) {
+            if ($stepBlueprints === null && $includePayrollStep) {
                 $steps[] = ['step_order' => 3, 'name' => 'Payroll confirmation', 'resolver_type' => 'scoped_permission', 'required_permission' => 'leave.confirm-payroll'];
             }
             foreach ($steps as $step) {
-                $definition->steps()->create($step + ['minimum_approvals' => 1, 'due_after_hours' => $reminderAfterHours]);
+                $definition->steps()->create([
+                    'step_order' => (int) $step['step_order'],
+                    'name' => (string) $step['name'],
+                    'resolver_type' => (string) $step['resolver_type'],
+                    'required_permission' => (string) $step['required_permission'],
+                    'minimum_approvals' => 1,
+                    'due_after_hours' => $reminderAfterHours,
+                ]);
             }
 
             return $definition->load('steps');
@@ -110,8 +119,20 @@ class ApprovalEngine
             'submitted_at' => now(),
         ]);
 
+        $fallbackStep = $definition->steps->firstWhere('resolver_type', 'scoped_permission');
+        $fallbackPermission = $fallbackStep instanceof ApprovalStep
+            ? (string) $fallbackStep->required_permission
+            : 'leave.review';
         foreach ($definition->steps as $definitionStep) {
-            $this->snapshotStep($instance, $definitionStep, $employee, $definitionStep->step_order === 1);
+            $this->snapshotStep(
+                $instance,
+                $definitionStep,
+                $employee,
+                $requester,
+                $subjectType,
+                $fallbackPermission,
+                $definitionStep->step_order === 1,
+            );
         }
 
         ApprovalAction::query()->create([
@@ -240,15 +261,18 @@ class ApprovalEngine
         User $delegator,
         User $delegate,
         array $data,
+        string $subjectType = 'leave_request',
+        string $managerPermission = 'leave.approve-manager',
     ): ApprovalDelegation {
-        if ($delegator->is($delegate) || ! $delegate->can('leave.approve-manager')) {
+        if ($delegator->is($delegate) || ! $delegate->can($managerPermission)) {
             throw ValidationException::withMessages(['delegate_user_id' => __('leave.validation.invalid_delegate')]);
         }
 
-        return DB::transaction(function () use ($actor, $entity, $delegator, $delegate, $data): ApprovalDelegation {
+        return DB::transaction(function () use ($actor, $entity, $delegator, $delegate, $data, $subjectType): ApprovalDelegation {
             $overlap = ApprovalDelegation::query()
                 ->where('legal_entity_id', $entity->getKey())
                 ->where('delegator_user_id', $delegator->getKey())
+                ->where('subject_type', $subjectType)
                 ->where('status', 'active')
                 ->whereDate('effective_from', '<=', $data['effective_to'])
                 ->whereDate('effective_to', '>=', $data['effective_from'])
@@ -261,7 +285,7 @@ class ApprovalEngine
                 'legal_entity_id' => $entity->getKey(),
                 'delegator_user_id' => $delegator->getKey(),
                 'delegate_user_id' => $delegate->getKey(),
-                'subject_type' => 'leave_request',
+                'subject_type' => $subjectType,
                 'effective_from' => $data['effective_from'],
                 'effective_to' => $data['effective_to'],
                 'reason' => trim($data['reason']),
@@ -273,10 +297,10 @@ class ApprovalEngine
                     'legal_entity_public_id' => $entity->public_id,
                     'delegator_user_id' => $delegator->getKey(),
                     'delegate_user_id' => $delegate->getKey(),
-                    'subject_type' => 'leave_request',
+                    'subject_type' => $subjectType,
                     'effective_from' => $data['effective_from'],
                     'effective_to' => $data['effective_to'],
-                ])->log('Temporary leave approval delegation created.');
+                ])->log('Temporary approval delegation created.');
 
             return $delegation;
         });
@@ -324,13 +348,26 @@ class ApprovalEngine
             ->get();
     }
 
-    private function snapshotStep(ApprovalInstance $instance, ApprovalStep $definitionStep, Employee $employee, bool $isFirst): void
-    {
+    private function snapshotStep(
+        ApprovalInstance $instance,
+        ApprovalStep $definitionStep,
+        Employee $employee,
+        User $requester,
+        string $subjectType,
+        string $fallbackPermission,
+        bool $isFirst,
+    ): void {
         $assigned = null;
         $delegatedFrom = null;
         $snapshot = ['resolver_type' => $definitionStep->resolver_type, 'resolved_at' => now()->toIso8601String()];
         if ($definitionStep->resolver_type === 'direct_manager') {
-            [$assigned, $delegatedFrom, $strategy] = $this->resolveManagerApprover($employee);
+            [$assigned, $delegatedFrom, $strategy] = $this->resolveManagerApprover(
+                $employee,
+                $requester,
+                $subjectType,
+                (string) $definitionStep->required_permission,
+                $fallbackPermission,
+            );
             $snapshot['strategy'] = $strategy;
             $snapshot['assigned_user_id'] = $assigned->getKey();
         } else {
@@ -355,8 +392,13 @@ class ApprovalEngine
     }
 
     /** @return array{User, ?User, string} */
-    private function resolveManagerApprover(Employee $employee): array
-    {
+    private function resolveManagerApprover(
+        Employee $employee,
+        User $requester,
+        string $subjectType,
+        string $managerPermission,
+        string $fallbackPermission,
+    ): array {
         $today = now()->toDateString();
         $history = EmploymentHistory::query()->where('employee_id', $employee->getKey())->effectiveOn($today)->first();
         $manager = $history?->manager;
@@ -365,13 +407,14 @@ class ApprovalEngine
             $delegation = ApprovalDelegation::query()
                 ->where('legal_entity_id', $employee->legal_entity_id)
                 ->where('delegator_user_id', $managerUser->getKey())
-                ->where(fn (Builder $query) => $query->whereNull('subject_type')->orWhere('subject_type', 'leave_request'))
+                ->where(fn (Builder $query) => $query->whereNull('subject_type')->orWhere('subject_type', $subjectType))
                 ->effectiveOn($today)->with('delegate')->first();
             if ($delegation?->delegate instanceof User && $delegation->delegate->is_active
-                && $delegation->delegate->can('leave.approve-manager')) {
+                && ! $delegation->delegate->is($requester)
+                && $delegation->delegate->can($managerPermission)) {
                 return [$delegation->delegate, $managerUser, 'active_delegation'];
             }
-            if ($managerUser->can('leave.approve-manager')) {
+            if (! $managerUser->is($requester) && $managerUser->can($managerPermission)) {
                 return [$managerUser, null, 'direct_manager'];
             }
 
@@ -380,12 +423,13 @@ class ApprovalEngine
             $upperUser = $upperManager instanceof Employee
                 ? $upperManager->user()->where('is_active', true)->first()
                 : null;
-            if ($upperUser instanceof User && $upperUser->can('leave.approve-manager')) {
+            if ($upperUser instanceof User && ! $upperUser->is($requester) && $upperUser->can($managerPermission)) {
                 return [$upperUser, $managerUser, 'upper_manager'];
             }
         }
 
-        $fallback = $this->scopedUsers((int) $employee->legal_entity_id, 'leave.review')->first();
+        $fallback = $this->scopedUsers((int) $employee->legal_entity_id, $fallbackPermission)
+            ->first(fn (User $candidate): bool => ! $candidate->is($requester));
         if (! $fallback instanceof User) {
             throw ValidationException::withMessages(['leave_type_public_id' => __('leave.validation.missing_approver')]);
         }
