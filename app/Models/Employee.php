@@ -31,6 +31,11 @@ class Employee extends Model
         ];
     }
 
+    public function employeeStatus(): EmployeeStatus
+    {
+        return EmployeeStatus::from((string) $this->getRawOriginal('status'));
+    }
+
     /** @param Builder<static> $query
      * @return Builder<static>
      */
@@ -111,6 +116,12 @@ class Employee extends Model
     public function familyMembers(): HasMany
     {
         return $this->hasMany(EmployeeFamilyMember::class)->latest('effective_from');
+    }
+
+    /** @return HasMany<OvertimeRequest, $this> */
+    public function overtimeRequests(): HasMany
+    {
+        return $this->hasMany(OvertimeRequest::class);
     }
 
     /** @return HasMany<EmployeeProfileChangeRequest, $this> */

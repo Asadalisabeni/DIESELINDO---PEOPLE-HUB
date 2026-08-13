@@ -90,6 +90,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(LeaveRequest::class, 'requested_by');
     }
 
+    /** @return HasMany<OvertimeRequest, $this> */
+    public function overtimeRequests(): HasMany
+    {
+        return $this->hasMany(OvertimeRequest::class, 'requested_by');
+    }
+
     /** @return HasMany<ApprovalAction, $this> */
     public function approvalActions(): HasMany
     {

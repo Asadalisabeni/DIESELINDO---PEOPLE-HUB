@@ -112,6 +112,17 @@
                             </li>
                         @endif
                     @endcan
+                    @can('overtime.access')
+                        @if (auth()->user()->employee)
+                            <li>
+                                <a href="{{ route('overtime.index') }}" @class([
+                                    'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                                    'bg-white/10 text-white shadow-sm' => request()->routeIs('overtime.index', 'overtime.requests.*'),
+                                    'text-slate-400 hover:bg-white/5 hover:text-white' => ! request()->routeIs('overtime.index', 'overtime.requests.*'),
+                                ])><x-icon name="clock" /><span>{{ __('ui.nav.overtime') }}</span></a>
+                            </li>
+                        @endif
+                    @endcan
                     @foreach ([
                         ['wallet', 'payroll'],
                         ['chart', 'reports'],
@@ -185,6 +196,12 @@
                     @endif
                     @if (auth()->user()->can('leave.approve-manager') || ((auth()->user()->can('leave.review') || auth()->user()->can('leave.confirm-payroll')) && auth()->user()->legalEntityAccess()->where('access_level', 'manage')->effectiveOn(now()->toDateString())->exists()))
                         <li><a href="{{ route('leave.review.index') }}" @class(['flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition', 'bg-white/10 text-white shadow-sm' => request()->routeIs('leave.review.*'), 'text-slate-400 hover:bg-white/5 hover:text-white' => !request()->routeIs('leave.review.*')])><x-icon name="inbox" /><span>{{ __('ui.nav.leave_review') }}</span></a></li>
+                    @endif
+                    @if ((auth()->user()->can('overtime.view') || auth()->user()->can('overtime.manage') || auth()->user()->can('overtime.report')) && auth()->user()->legalEntityAccess()->effectiveOn(now()->toDateString())->exists())
+                        <li><a href="{{ route('overtime.admin.index') }}" @class(['flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition', 'bg-white/10 text-white shadow-sm' => request()->routeIs('overtime.admin.*'), 'text-slate-400 hover:bg-white/5 hover:text-white' => !request()->routeIs('overtime.admin.*')])><x-icon name="clock" /><span>{{ __('ui.nav.overtime_admin') }}</span></a></li>
+                    @endif
+                    @if (auth()->user()->can('overtime.approve-manager') || ((auth()->user()->can('overtime.validate') || auth()->user()->can('overtime.include-payroll')) && auth()->user()->legalEntityAccess()->where('access_level', 'manage')->effectiveOn(now()->toDateString())->exists()))
+                        <li><a href="{{ route('overtime.review.index') }}" @class(['flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition', 'bg-white/10 text-white shadow-sm' => request()->routeIs('overtime.review.*'), 'text-slate-400 hover:bg-white/5 hover:text-white' => !request()->routeIs('overtime.review.*')])><x-icon name="inbox" /><span>{{ __('ui.nav.overtime_review') }}</span></a></li>
                     @endif
                     @can('audit.view')
                         <li>
