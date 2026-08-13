@@ -12,6 +12,9 @@ use App\Http\Controllers\EssChangeRequestController;
 use App\Http\Controllers\EssDashboardController;
 use App\Http\Controllers\EssProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LeaveAdminController;
+use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\LeaveReviewController;
 use App\Http\Controllers\NotificationCenterController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SecurityController;
@@ -88,6 +91,22 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/attendance-admin/holidays', [AttendanceAdminController::class, 'storeHoliday'])->name('attendance.admin.holidays.store');
     Route::post('/attendance-admin/assignments', [AttendanceAdminController::class, 'assignSchedule'])->name('attendance.admin.assignments.store');
     Route::post('/attendance-admin/imports', [AttendanceAdminController::class, 'import'])->name('attendance.admin.imports.store');
+
+    Route::get('/leave', [LeaveController::class, 'index'])->name('leave.index');
+    Route::post('/leave/requests', [LeaveController::class, 'store'])->name('leave.requests.store');
+    Route::delete('/leave/requests/{leaveRequest}', [LeaveController::class, 'cancel'])->name('leave.requests.cancel');
+    Route::get('/leave-review', [LeaveReviewController::class, 'index'])->name('leave.review.index');
+    Route::put('/leave-review/{leaveRequest}', [LeaveReviewController::class, 'review'])->name('leave.review.update');
+    Route::get('/leave-evidence/{leaveRequest}/download', [LeaveReviewController::class, 'downloadEvidence'])->name('leave.evidence.download');
+
+    Route::get('/leave-admin', [LeaveAdminController::class, 'index'])->name('leave.admin.index');
+    Route::post('/leave-admin/types', [LeaveAdminController::class, 'storeType'])->name('leave.admin.types.store');
+    Route::post('/leave-admin/policies', [LeaveAdminController::class, 'storePolicy'])->name('leave.admin.policies.store');
+    Route::post('/leave-admin/entitlements', [LeaveAdminController::class, 'grant'])->name('leave.admin.entitlements.store');
+    Route::post('/leave-admin/entitlements/{entitlement}/adjustments', [LeaveAdminController::class, 'adjust'])->name('leave.admin.adjustments.store');
+    Route::post('/leave-admin/delegations', [LeaveAdminController::class, 'storeDelegation'])->name('leave.admin.delegations.store');
+    Route::put('/leave-admin/delegations/{delegation}/revoke', [LeaveAdminController::class, 'revokeDelegation'])->name('leave.admin.delegations.revoke');
+    Route::get('/leave-admin/report.csv', [LeaveAdminController::class, 'export'])->name('leave.admin.report.export');
 });
 
 Route::post('/locale', function (Request $request): RedirectResponse {

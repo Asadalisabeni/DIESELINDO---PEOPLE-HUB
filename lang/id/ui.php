@@ -31,6 +31,8 @@ return [
         'attendance_admin' => 'Konfigurasi kehadiran',
         'attendance_review' => 'Review kehadiran',
         'leave' => 'Cuti & izin',
+        'leave_admin' => 'Konfigurasi cuti',
+        'leave_review' => 'Antrean approval cuti',
         'payroll' => 'Payroll',
         'reports' => 'Laporan',
         'administration' => 'Administrasi',
@@ -67,8 +69,8 @@ return [
     ],
     'home' => [
         'title' => 'Ruang kerja karyawan yang terhubung',
-        'eyebrow' => 'Phase 6 · Employee Self-Service',
-        'description' => 'Portal karyawan yang aman untuk melihat profil, memperbarui kontak, mengajukan perubahan sensitif, dan menerima notifikasi.',
+        'eyebrow' => 'Phase 8 · Cuti & izin',
+        'description' => 'Workspace karyawan yang aman untuk self-service, kehadiran, saldo cuti, pengajuan, dan approval berurutan.',
         'status_label' => 'Status checkpoint',
         'status_value' => 'Phase 5 terkunci',
         'foundation_label' => 'Fondasi aktif',
@@ -163,7 +165,7 @@ return [
         'locked' => 'Terkunci',
     ],
     'footer' => [
-        'baseline' => 'Employee Self-Service · Phase 6',
+        'baseline' => 'Cuti & izin · Phase 8',
         'privacy' => 'Data bisnis dibatasi berdasarkan role dan legal entity',
     ],
 ];

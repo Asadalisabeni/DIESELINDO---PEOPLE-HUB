@@ -31,6 +31,8 @@ return [
         'attendance_admin' => 'Attendance configuration',
         'attendance_review' => 'Attendance review',
         'leave' => 'Leave & permits',
+        'leave_admin' => 'Leave configuration',
+        'leave_review' => 'Leave approval queue',
         'payroll' => 'Payroll',
         'reports' => 'Reports',
         'administration' => 'Administration',
@@ -67,8 +69,8 @@ return [
     ],
     'home' => [
         'title' => 'Your connected employee workspace',
-        'eyebrow' => 'Phase 6 · Employee Self-Service',
-        'description' => 'A secure employee portal for profile access, direct contact updates, reviewed sensitive changes, and notifications.',
+        'eyebrow' => 'Phase 8 · Leave & permits',
+        'description' => 'A secure employee workspace for self-service, attendance, leave balances, requests, and sequential approvals.',
         'status_label' => 'Checkpoint status',
         'status_value' => 'Phase 5 locked',
         'foundation_label' => 'Active foundation',
@@ -163,7 +165,7 @@ return [
         'locked' => 'Locked',
     ],
     'footer' => [
-        'baseline' => 'Employee Self-Service · Phase 6',
+        'baseline' => 'Leave & permits · Phase 8',
         'privacy' => 'Business data is restricted by role and legal entity',
     ],
 ];
