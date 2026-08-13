@@ -83,4 +83,16 @@ class LegalEntity extends Model
     {
         return $this->hasMany(UserLegalEntityAccess::class);
     }
+
+    /** @return HasMany<WorkSchedule, $this> */
+    public function workSchedules(): HasMany
+    {
+        return $this->hasMany(WorkSchedule::class);
+    }
+
+    /** @return HasMany<AttendanceSource, $this> */
+    public function attendanceSources(): HasMany
+    {
+        return $this->hasMany(AttendanceSource::class);
+    }
 }

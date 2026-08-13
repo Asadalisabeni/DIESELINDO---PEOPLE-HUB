@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AttendanceAdminController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AttendanceCorrectionController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\EmployeeController;
@@ -69,6 +72,22 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::get('/notifications', [NotificationCenterController::class, 'index'])->name('notifications.index');
     Route::patch('/notifications/read-all', [NotificationCenterController::class, 'readAll'])->name('notifications.read-all');
     Route::patch('/notifications/{notification}/read', [NotificationCenterController::class, 'read'])->name('notifications.read');
+
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance/events', [AttendanceController::class, 'store'])->name('attendance.events.store');
+    Route::post('/attendance/sync', [AttendanceController::class, 'store'])->name('attendance.sync.store');
+    Route::post('/attendance/corrections', [AttendanceCorrectionController::class, 'store'])->name('attendance.corrections.store');
+    Route::delete('/attendance/corrections/{correction}', [AttendanceCorrectionController::class, 'cancel'])->name('attendance.corrections.cancel');
+    Route::get('/attendance-review', [AttendanceCorrectionController::class, 'queue'])->name('attendance.review.queue');
+    Route::put('/attendance-review/{correction}/manager', [AttendanceCorrectionController::class, 'managerReview'])->name('attendance.review.manager');
+    Route::put('/attendance-review/{correction}/hr', [AttendanceCorrectionController::class, 'hrReview'])->name('attendance.review.hr');
+
+    Route::get('/attendance-admin', [AttendanceAdminController::class, 'index'])->name('attendance.admin.index');
+    Route::post('/attendance-admin/schedules', [AttendanceAdminController::class, 'storeSchedule'])->name('attendance.admin.schedules.store');
+    Route::post('/attendance-admin/sources', [AttendanceAdminController::class, 'storeSource'])->name('attendance.admin.sources.store');
+    Route::post('/attendance-admin/holidays', [AttendanceAdminController::class, 'storeHoliday'])->name('attendance.admin.holidays.store');
+    Route::post('/attendance-admin/assignments', [AttendanceAdminController::class, 'assignSchedule'])->name('attendance.admin.assignments.store');
+    Route::post('/attendance-admin/imports', [AttendanceAdminController::class, 'import'])->name('attendance.admin.imports.store');
 });
 
 Route::post('/locale', function (Request $request): RedirectResponse {

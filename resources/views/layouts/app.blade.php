@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="color-scheme" content="light dark">
         <meta name="theme-color" content="#101b2d">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>@hasSection('title')@yield('title') — @endif{{ config('app.name') }}</title>
 
@@ -89,8 +90,18 @@
                             </a>
                         </li>
                     @endcan
+                    @can('attendance.access')
+                        @if (auth()->user()->employee)
+                            <li>
+                                <a href="{{ route('attendance.index') }}" @class([
+                                    'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                                    'bg-white/10 text-white shadow-sm' => request()->routeIs('attendance.index', 'attendance.corrections.*'),
+                                    'text-slate-400 hover:bg-white/5 hover:text-white' => ! request()->routeIs('attendance.index', 'attendance.corrections.*'),
+                                ])><x-icon name="clock" /><span>{{ __('ui.nav.attendance') }}</span></a>
+                            </li>
+                        @endif
+                    @endcan
                     @foreach ([
-                        ['clock', 'attendance'],
                         ['calendar', 'leave'],
                         ['wallet', 'payroll'],
                         ['chart', 'reports'],
@@ -152,6 +163,12 @@
                                 <span>{{ __('ui.nav.ess_review') }}</span>
                             </a>
                         </li>
+                    @endif
+                    @if ((auth()->user()->can('attendance.manage') || auth()->user()->can('attendance.view')) && auth()->user()->legalEntityAccess()->effectiveOn(now()->toDateString())->exists())
+                        <li><a href="{{ route('attendance.admin.index') }}" @class(['flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition', 'bg-white/10 text-white shadow-sm' => request()->routeIs('attendance.admin.*'), 'text-slate-400 hover:bg-white/5 hover:text-white' => !request()->routeIs('attendance.admin.*')])><x-icon name="clock" /><span>{{ __('ui.nav.attendance_admin') }}</span></a></li>
+                    @endif
+                    @if ((auth()->user()->employee && auth()->user()->can('attendance.corrections.approve-manager')) || (auth()->user()->can('attendance.corrections.review') && auth()->user()->legalEntityAccess()->where('access_level', 'manage')->effectiveOn(now()->toDateString())->exists()))
+                        <li><a href="{{ route('attendance.review.queue') }}" @class(['flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition', 'bg-white/10 text-white shadow-sm' => request()->routeIs('attendance.review.*'), 'text-slate-400 hover:bg-white/5 hover:text-white' => !request()->routeIs('attendance.review.*')])><x-icon name="inbox" /><span>{{ __('ui.nav.attendance_review') }}</span></a></li>
                     @endif
                     @can('audit.view')
                         <li>
@@ -221,7 +238,7 @@
                         type="button"
                         x-on:click="$store.theme.toggle()"
                         class="rounded-lg border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-50 hover:text-slate-950 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
-                        :aria-label="$store.theme.dark ? @js(__('ui.theme.light')) : @js(__('ui.theme.dark'))"
+                        aria-label="{{ __('ui.theme.toggle') }}"
                     >
                         <span x-show="! $store.theme.dark"><x-icon name="moon" /></span>
                         <span x-show="$store.theme.dark" x-cloak><x-icon name="sun" /></span>

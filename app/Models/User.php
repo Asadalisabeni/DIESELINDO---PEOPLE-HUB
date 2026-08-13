@@ -77,4 +77,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(EmployeeProfileChangeRequest::class, 'requested_by');
     }
+
+    /** @return HasMany<AttendanceCorrection, $this> */
+    public function attendanceCorrections(): HasMany
+    {
+        return $this->hasMany(AttendanceCorrection::class, 'requested_by');
+    }
 }
