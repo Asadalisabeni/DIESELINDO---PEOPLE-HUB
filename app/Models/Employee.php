@@ -143,6 +143,18 @@ class Employee extends Model
         return $this->hasMany(AttendanceCorrection::class)->latest('submitted_at');
     }
 
+    /** @return HasMany<LeaveEntitlement, $this> */
+    public function leaveEntitlements(): HasMany
+    {
+        return $this->hasMany(LeaveEntitlement::class);
+    }
+
+    /** @return HasMany<LeaveRequest, $this> */
+    public function leaveRequests(): HasMany
+    {
+        return $this->hasMany(LeaveRequest::class)->latest('submitted_at');
+    }
+
     /** @return HasOne<User, $this> */
     public function user(): HasOne
     {
