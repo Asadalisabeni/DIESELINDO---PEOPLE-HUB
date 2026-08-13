@@ -101,8 +101,18 @@
                             </li>
                         @endif
                     @endcan
+                    @can('leave.access')
+                        @if (auth()->user()->employee)
+                            <li>
+                                <a href="{{ route('leave.index') }}" @class([
+                                    'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                                    'bg-white/10 text-white shadow-sm' => request()->routeIs('leave.index', 'leave.requests.*'),
+                                    'text-slate-400 hover:bg-white/5 hover:text-white' => ! request()->routeIs('leave.index', 'leave.requests.*'),
+                                ])><x-icon name="calendar" /><span>{{ __('ui.nav.leave') }}</span></a>
+                            </li>
+                        @endif
+                    @endcan
                     @foreach ([
-                        ['calendar', 'leave'],
                         ['wallet', 'payroll'],
                         ['chart', 'reports'],
                     ] as [$icon, $label])
@@ -169,6 +179,12 @@
                     @endif
                     @if ((auth()->user()->employee && auth()->user()->can('attendance.corrections.approve-manager')) || (auth()->user()->can('attendance.corrections.review') && auth()->user()->legalEntityAccess()->where('access_level', 'manage')->effectiveOn(now()->toDateString())->exists()))
                         <li><a href="{{ route('attendance.review.queue') }}" @class(['flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition', 'bg-white/10 text-white shadow-sm' => request()->routeIs('attendance.review.*'), 'text-slate-400 hover:bg-white/5 hover:text-white' => !request()->routeIs('attendance.review.*')])><x-icon name="inbox" /><span>{{ __('ui.nav.attendance_review') }}</span></a></li>
+                    @endif
+                    @if ((auth()->user()->can('leave.view') || auth()->user()->can('leave.manage') || auth()->user()->can('leave.report')) && auth()->user()->legalEntityAccess()->effectiveOn(now()->toDateString())->exists())
+                        <li><a href="{{ route('leave.admin.index') }}" @class(['flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition', 'bg-white/10 text-white shadow-sm' => request()->routeIs('leave.admin.*'), 'text-slate-400 hover:bg-white/5 hover:text-white' => !request()->routeIs('leave.admin.*')])><x-icon name="calendar" /><span>{{ __('ui.nav.leave_admin') }}</span></a></li>
+                    @endif
+                    @if (auth()->user()->can('leave.approve-manager') || ((auth()->user()->can('leave.review') || auth()->user()->can('leave.confirm-payroll')) && auth()->user()->legalEntityAccess()->where('access_level', 'manage')->effectiveOn(now()->toDateString())->exists()))
+                        <li><a href="{{ route('leave.review.index') }}" @class(['flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition', 'bg-white/10 text-white shadow-sm' => request()->routeIs('leave.review.*'), 'text-slate-400 hover:bg-white/5 hover:text-white' => !request()->routeIs('leave.review.*')])><x-icon name="inbox" /><span>{{ __('ui.nav.leave_review') }}</span></a></li>
                     @endif
                     @can('audit.view')
                         <li>

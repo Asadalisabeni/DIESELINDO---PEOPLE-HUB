@@ -16,6 +16,8 @@ final class RoleMatrix
         'attendance.access',
         'attendance.clock',
         'attendance.corrections.request',
+        'leave.access',
+        'leave.request',
     ];
 
     /** @var list<string> */
@@ -59,6 +61,14 @@ final class RoleMatrix
         'attendance.manage',
         'attendance.corrections.review',
         'attendance.import',
+        'leave.team.view',
+        'leave.approve-manager',
+        'leave.view',
+        'leave.manage',
+        'leave.review',
+        'leave.adjust',
+        'leave.report',
+        'leave.confirm-payroll',
     ];
 
     /** @var array<string, list<string>> */
@@ -75,6 +85,8 @@ final class RoleMatrix
             'ess.profile-change.review',
             'attendance.team.view', 'attendance.corrections.approve-manager',
             'attendance.view', 'attendance.manage', 'attendance.corrections.review', 'attendance.import',
+            'leave.team.view', 'leave.approve-manager', 'leave.view', 'leave.manage',
+            'leave.review', 'leave.adjust', 'leave.report',
         ],
         'Company HR Admin' => [
             ...self::SELF_SERVICE_PERMISSIONS,
@@ -86,6 +98,8 @@ final class RoleMatrix
             'ess.profile-change.review',
             'attendance.team.view', 'attendance.corrections.approve-manager',
             'attendance.view', 'attendance.manage', 'attendance.corrections.review', 'attendance.import',
+            'leave.team.view', 'leave.approve-manager', 'leave.view', 'leave.manage',
+            'leave.review', 'leave.adjust', 'leave.report',
         ],
         'Payroll Administrator' => [
             ...self::SELF_SERVICE_PERMISSIONS,
@@ -93,6 +107,7 @@ final class RoleMatrix
             'payroll.prepare', 'payslips.publish', 'reports.export',
             'organization.view', 'employee-financial.view',
             'attendance.view',
+            'leave.view', 'leave.report', 'leave.confirm-payroll',
         ],
         'Finance Reviewer' => [
             ...self::SELF_SERVICE_PERMISSIONS,
@@ -106,11 +121,13 @@ final class RoleMatrix
             ...self::SELF_SERVICE_PERMISSIONS,
             'employees.view', 'reports.export', 'organization.view',
             'attendance.team.view', 'attendance.corrections.approve-manager', 'attendance.view',
+            'leave.team.view', 'leave.approve-manager', 'leave.view', 'leave.report',
         ],
         'Supervisor' => [
             ...self::SELF_SERVICE_PERMISSIONS,
             'employees.view', 'organization.view',
             'attendance.team.view', 'attendance.corrections.approve-manager',
+            'leave.team.view', 'leave.approve-manager',
         ],
         'Employee' => self::SELF_SERVICE_PERMISSIONS,
         'Auditor' => [
@@ -118,6 +135,7 @@ final class RoleMatrix
             'employees.view', 'employees.view-sensitive', 'salaries.view', 'reports.export', 'audit.view',
             'organization.view', 'documents.view', 'documents.download', 'employee-financial.view',
             'attendance.view',
+            'leave.view', 'leave.report',
         ],
     ];
 

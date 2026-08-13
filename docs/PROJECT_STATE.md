@@ -4,105 +4,104 @@ Terakhir diperbarui: 13 Agustus 2026 (Asia/Jakarta)
 
 ## Status
 
-- Current phase: Phase 7 — Attendance, implementation/review candidate.
-- Phase 0 sampai Phase 6 telah disetujui dan dikunci.
-- Phase 6 dipromosikan melalui PR #19 ke `main`; annotated tag
-  `phase-6-complete` menunjuk tepat ke main SHA
-  `f163652be8b35279309cf4f444ebf08844bfa03c`. Push checks run
-  `30766693871` lulus untuk PHP/MySQL dan frontend build/audit.
-- Phase 7 branch: `feature/phase-7-attendance`, dibuat tepat dari tag
-  `phase-6-complete`.
-- Git author/tagger wajib tetap persis `As'ad Alisabeni
-  <sabeni706@gmail.com>`; apostrof tidak boleh hilang.
-- Laravel Framework 13, PHP 8.3, MySQL 8, Blade, Tailwind CSS 4, Alpine.js, dan
-  Vite tetap menjadi baseline.
+- Current phase: Phase 8 — Leave dan izin, implementation/review candidate.
+- Phase 0 sampai Phase 7 telah disetujui dan dikunci.
+- Phase 7 dipromosikan melalui feature PR #23 ke `develop`, lalu lock PR #24 ke
+  `main`. Annotated tag `phase-7-complete` menunjuk tepat ke main SHA
+  `390a6b74f9a2f7901f4867e7cbdb12805d8dff0f`.
+- Main CI run `31668248715` lulus untuk PHP quality/MySQL migration dan frontend
+  build/audit. Tagger terverifikasi persis `As'ad Alisabeni
+  <sabeni706@gmail.com>`; apostrof tidak hilang.
+- Phase 8 branch: `feature/phase-8-leave`, dibuat tepat dari tag
+  `phase-7-complete`.
+- Laravel 13, PHP 8.3, MySQL 8, Blade, Tailwind CSS 4, Alpine.js, Vite, UTC
+  storage, tampilan Asia/Jakarta, IDR, serta UI Indonesia/Inggris tetap baseline.
 
-## Phase 7 implementation candidate
+## Phase 8 implementation candidate
 
-- Effective schedule mendukung prioritas employee, department, branch, lalu
-  legal entity; timezone, jam kerja, break, grace, hari kerja, dan hari libur
-  merupakan konfigurasi, bukan production policy hardcoded.
-- Attendance source abstraction mencakup fingerprint, mobile GPS, web, offline,
-  manual adjustment, dan import dengan validation thresholds tanpa secret.
-- Raw event append-only menyimpan server/device timestamps, unique external ID,
-  idempotency hash, encrypted GPS/field/device metadata, anomaly, dan payload
-  integrity hash.
-- Daily normalized attendance mempertahankan actual punch, scheduled context,
-  late/early/worked minutes, numbered versions, supersedes link, dan explicit
-  payroll readiness. Tidak ada potongan payroll otomatis.
-- Offline browser queue menyimpan payload minimum, tidak menyimpan selfie/note/
-  customer text, menghapus item setelah sync, dan menggunakan retry idempoten.
-- Correction membutuhkan direct-manager approval lalu scoped HR approval,
-  anti-stale fingerprint, encrypted old/new/review data, private evidence, dan
-  membuat normalized version baru tanpa mengubah raw event.
-- Solution X100C tersedia sebagai canonical CSV reconciliation PoC. Project tidak
-  mengklaim integrasi real-time, ADMS, SDK, protocol, atau direct DB sebelum
-  technical spike dengan perangkat nyata terbukti.
-- Employee, review, dan admin attendance UI tersedia dalam Indonesia/Inggris dan
-  memakai permission plus explicit legal-entity scope.
+- Leave type configurable per legal entity menyimpan kategori, paid/unpaid,
+  balance behavior, unit full-day, evidence threshold, dan payroll confirmation.
+- Leave policy versioned dan effective-dated menyimpan eligibility, entitlement,
+  validity, carry forward, notice, maximum days, reminder, dan escalation. Nilai
+  12 hari/12 bulan hanyalah input configurable, bukan policy production hardcoded.
+- Entitlement grant idempoten memakai unique reference. Saldo berasal dari SUM
+  ledger append-only opening/entitlement/adjustment/usage/cancellation/expiry/
+  carry-forward/reversal; tidak ada mutable balance column atau float arithmetic.
+- Request menghitung hari kerja dari effective schedule dan holiday, lalu
+  memvalidasi employment, eligibility, notice, maximum days, overlap, evidence,
+  dan saldo sebelum write.
+- Generic approval engine memakai definition, step, instance, resolved step
+  snapshot, action, dan delegation. Approval engine tidak mengimpor model Leave.
+- Paid leave: Employee → direct/delegated/upper manager → scoped HR. Unpaid leave
+  menambah scoped Payroll confirmation. Tidak ada auto-approval.
+- Final approval mem-lock saldo dan memposting usage secara atomik. Unpaid leave
+  tidak memposting saldo atau menghitung potongan payroll.
+- Request reason, approval notes/snapshots, delegation/adjustment reasons terenkripsi;
+  evidence private; ledger/action immutable; export legal-entity scoped dan diaudit.
+- Notification database+mail queued memakai `afterCommit`; lifecycle expiry dan
+  reminder dijadwalkan 00:30 Asia/Jakarta dengan overlap protection.
+- UI ESS, admin/read-only, review queue, ledger, delegation, report CSV tersedia
+  dalam Bahasa Indonesia dan Inggris.
 
 ## Verification evidence saat ini
 
-- Phase 6 lock: PASS — PR #19 merged, main CI hijau, annotated tag
-  `phase-6-complete` terverifikasi.
+- Phase 7 lock: PASS — PR #23/#24 merged, tag main terverifikasi, CI run
+  `31668248715` hijau.
 - Composer quality: PASS — Pint bersih, Larastan/PHPStan level 8 tanpa
-  suppression dan 0 error, serta full Pest 72 tests / 608 assertions.
-- Phase 7 feature/security suite: PASS — 11 tests / 78 assertions, termasuk
-  encrypted raw GPS/field data, configurable grace, idempotency, immutability,
-  anomaly block, correction versioning, cross-entity denial, dan X100C PoC.
-- Real MySQL upgrade: PASS — migration Phase 7 batch 5; seluruh 10 tabel
-  attendance terdeteksi. Tidak ada reset, fresh, rollback, atau penghapusan data.
-- Role/permission seed: PASS — 10 roles, 38 permissions, 199 mappings.
-- Route registration dan Blade compilation: PASS — 14 attendance routes dan
-  semua template berhasil dicache.
-- Vite production build: PASS — 58 modules transformed.
-- Composer strict validation: PASS. Composer audit: PASS, 0 advisory setelah
-  `league/commonmark` diperbarui dari 2.8.3 ke 2.10.0. npm audit: PASS, 0
-  vulnerability setelah transitive `nanoid` diperbarui ke 3.3.18.
-- Public browser QA: PASS — login ID/EN, theme interaction dan accessibility
-  label, viewport 375x812 tanpa horizontal overflow, guest redirect dari
-  attendance/admin, asset load, dan console tanpa warning/error. QA server
-  sementara pada port 8086 telah dihentikan.
-- Authenticated employee/manager/HR attendance browser UAT: PENDING karena
-  database bisnis lokal masih memiliki 0 legal entity dan 0 employee; account
-  administrator tidak diberi implicit entity atau employee scope.
-- Secret scan dan diff whitespace check: PASS; password administrator tidak
-  terdapat dalam source, docs, test, atau lockfile.
+  suppression dan 0 error, full Pest 83 tests / 704 assertions.
+- Phase 8 feature/security suite: PASS — 11 tests / 96 assertions untuk effective
+  policy, immutable ledger, holiday calendar, 2/3-stage approval, delegation,
+  encryption, validation rollback, cross-entity denial, expiry, queued
+  after-commit notification, bilingual UI, read-only scope, dan audited export.
+- Real MySQL upgrade: PASS — migration Phase 8 batch 6; sebelas tabel Leave dan
+  Approval tersedia. Tidak ada reset, fresh, rollback, atau penghapusan data.
+- Role/permission seed dijalankan ulang secara idempoten.
+- Route/Blade/scheduler: PASS — 14 leave routes, seluruh Blade cached, command
+  lifecycle dijadwalkan 00:30 Asia/Jakarta tanpa overlap.
+- Generic Approval boundary scan: PASS — tidak ada concrete Leave model import.
+- Frontend build: PASS — Vite production build menyelesaikan 58 module.
+- Dependency audit: PASS — Composer tidak menemukan security advisory dan npm
+  melaporkan 0 vulnerability.
+- Browser smoke QA: PASS — route ESS/review/admin menolak guest ke login,
+  pergantian ID/EN dan dark mode bekerja, viewport 375x812 tanpa horizontal
+  overflow, serta browser console tanpa warning/error.
+- Git/GitHub checkpoint: PASS — diff dan secret audit bersih, implementation
+  commit `e826d1e11102f29a80ab9ec715c8a4ee65238866` ter-push ke
+  `feature/phase-8-leave`, draft PR #25 menargetkan `develop`, dan CI run
+  `31671997610` lulus untuk frontend serta PHP quality/MySQL migration.
+- Database bisnis lokal masih 0 legal entity dan 0 employee; authenticated UAT
+  memakai test suite isolated, bukan menyisipkan dummy data ke database bisnis.
 - Project MES dan port 8877 tidak disentuh.
 
 ## Architecture dan security invariants
 
-- Public URL memakai ULID; numeric internal ID tidak menjadi employee,
-  attendance, correction, document, atau import URL.
-- Self-scope dan administrative entity scope tetap menjadi dua jalur
-  authorization terpisah. Super Admin tidak memiliki implicit row-scope bypass.
-- Capability, effective manage scope, linked employee/manager identity,
-  encryption, private storage, idempotency, anomaly review, dan audit allowlist
-  diterapkan berlapis.
-- Raw attendance event tidak boleh di-update atau dihapus melalui application
-  model. Koreksi membuat normalized version baru.
-- Device time tidak dipercaya sendirian. Server receipt time selalu dicatat;
-  delayed offline, clock mismatch, GPS lemah/hilang, atau selfie wajib yang
-  hilang membuat anomaly dan payroll block.
-- Attendance, late total, dan correction Phase 7 tidak menghitung salary
-  deduction, overtime pay, tax, BPJS, atau final payroll eligibility.
+- Self-scope, assigned-current-approver, permission, dan effective legal-entity
+  scope adalah lapisan terpisah. Super Admin tidak memiliki implicit row bypass.
+- Approval subject memakai allowlisted scalar contract: type, public ID, entity,
+  requester, employee snapshot, checksum, dan correlation ID.
+- Requester tidak dapat approve request sendiri. Delegation selalu sementara,
+  scoped, auditable, serta tidak memberi permission baru kepada delegate.
+- Ledger dan approval action tidak dapat update/delete melalui application model.
+  Koreksi menggunakan entry/action baru dengan idempotency key.
+- Evidence dan catatan medis tidak muncul di notification, audit property, atau CSV.
+- Phase 8 tidak menghitung payroll amount, salary deduction, PPh 21, BPJS, atau
+  overtime. Output unpaid hanya downstream classification untuk phase payroll.
 
-## Open gates
+## Open production gates
 
-1. Approved HR schedule, grace/rounding, holiday, correction delegation/SLA, dan
-   downstream payroll eligibility policy.
-2. Exact Solution X100C model/firmware, vendor documentation, protocol/SDK/export
-   evidence, timezone/identifier behavior, dan sanitized device sample.
-3. GPS/geofence owner and policy; selfie consent/legal basis, retention/deletion,
-   malware scanning, private object storage, and incident response.
-4. Real HR master data, explicit employee-account linking, serta authenticated
-   employee/direct-manager/HR UAT pada desktop/mobile/keyboard dan offline flow.
-5. GitHub Actions pada draft PR serta review eksplisit Project/UAT Lead sebelum
-   merge atau lock Phase 7.
+1. Sign-off HR/Legal untuk leave type, eligibility, entitlement, expiry, carry
+   forward, special leave, medical certificate threshold, notice, backdate,
+   cancellation-after-approval, dan retention evidence.
+2. Approval owner, delegation rules, reminder/escalation SLA, upper-manager/HR
+   fallback, dan unpaid Payroll handoff contract.
+3. Real legal entity/employee/manager/account/work schedule/holiday data dan UAT
+   Employee, Manager, HR, Payroll, Auditor pada desktop/mobile/keyboard/email.
+4. Malware scanning, private object storage, queued email sandbox, worker/scheduler
+   monitoring, expiry rehearsal, and balance reconciliation with legacy data.
+5. Review eksplisit Project/UAT Lead pada draft PR #25 sebelum merge, promotion,
+   atau tag `phase-8-complete`; GitHub Actions kandidat awal telah lulus.
 
 ## Next authorized step
 
-Quality gate lokal candidate telah hijau. Commit dengan identitas Git yang
-disetujui, push branch, buka draft PR ke `develop`, dan tunggu GitHub Actions.
-Jangan merge, promote, atau membuat tag `phase-7-complete` sebelum pernyataan
-lock eksplisit dari Project/UAT Lead.
+Project/UAT Lead meninjau draft PR #25 beserta UAT dan gate production di atas.
+Jangan merge, promotion, atau membuat tag Phase 8 sebelum instruksi lock eksplisit.
