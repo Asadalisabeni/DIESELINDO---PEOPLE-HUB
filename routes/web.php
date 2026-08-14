@@ -20,6 +20,7 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\OvertimeAdminController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\OvertimeReviewController;
+use App\Http\Controllers\PayrollAdminController;
 use App\Http\Controllers\SecurityController;
 use App\Http\Controllers\UserAccessController;
 use App\Http\Controllers\UserLegalEntityAccessController;
@@ -122,6 +123,18 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('/overtime-admin/delegations', [OvertimeAdminController::class, 'storeDelegation'])->name('overtime.admin.delegations.store');
     Route::put('/overtime-admin/delegations/{delegation}/revoke', [OvertimeAdminController::class, 'revokeDelegation'])->name('overtime.admin.delegations.revoke');
     Route::get('/overtime-admin/report.csv', [OvertimeAdminController::class, 'export'])->name('overtime.admin.report.export');
+
+    Route::get('/payroll-admin', [PayrollAdminController::class, 'index'])->name('payroll.admin.index');
+    Route::post('/payroll-admin/components', [PayrollAdminController::class, 'storeComponent'])->name('payroll.admin.components.store');
+    Route::post('/payroll-admin/groups', [PayrollAdminController::class, 'storeGroup'])->name('payroll.admin.groups.store');
+    Route::post('/payroll-admin/memberships', [PayrollAdminController::class, 'storeMembership'])->name('payroll.admin.memberships.store');
+    Route::post('/payroll-admin/salaries', [PayrollAdminController::class, 'storeSalary'])->name('payroll.admin.salaries.store');
+    Route::put('/payroll-admin/salaries/{salaryHistory}/approve', [PayrollAdminController::class, 'approveSalary'])->name('payroll.admin.salaries.approve');
+    Route::post('/payroll-admin/periods', [PayrollAdminController::class, 'storePeriod'])->name('payroll.admin.periods.store');
+    Route::post('/payroll-admin/periods/{payrollPeriod}/runs', [PayrollAdminController::class, 'storeRun'])->name('payroll.admin.runs.store');
+    Route::post('/payroll-admin/runs/{payrollRun}/calculate', [PayrollAdminController::class, 'calculate'])->name('payroll.admin.runs.calculate');
+    Route::post('/payroll-admin/runs/{payrollRun}/validate', [PayrollAdminController::class, 'validateRun'])->name('payroll.admin.runs.validate');
+    Route::get('/payroll-admin/runs/{payrollRun}/register.csv', [PayrollAdminController::class, 'export'])->name('payroll.admin.runs.export');
 });
 
 Route::post('/locale', function (Request $request): RedirectResponse {
