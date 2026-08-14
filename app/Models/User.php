@@ -96,6 +96,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(OvertimeRequest::class, 'requested_by');
     }
 
+    /** @return HasMany<SalaryHistory, $this> */
+    public function salaryChangesCreated(): HasMany
+    {
+        return $this->hasMany(SalaryHistory::class, 'created_by');
+    }
+
+    /** @return HasMany<PayrollRun, $this> */
+    public function payrollRunsCreated(): HasMany
+    {
+        return $this->hasMany(PayrollRun::class, 'created_by');
+    }
+
     /** @return HasMany<ApprovalAction, $this> */
     public function approvalActions(): HasMany
     {

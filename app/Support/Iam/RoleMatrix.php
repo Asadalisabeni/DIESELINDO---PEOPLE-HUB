@@ -38,7 +38,10 @@ final class RoleMatrix
         'employees.view-sensitive',
         'salaries.view',
         'salaries.update',
+        'salaries.approve',
+        'payroll.view',
         'payroll.prepare',
+        'payroll.validate',
         'payroll.review',
         'payroll.approve',
         'payroll.lock',
@@ -87,8 +90,8 @@ final class RoleMatrix
         'Group HR Admin' => [
             ...self::SELF_SERVICE_PERMISSIONS,
             'employees.view', 'employees.create', 'employees.update', 'employees.view-sensitive',
-            'salaries.view', 'salaries.update', 'payroll.prepare', 'payroll.review',
-            'payslips.publish', 'reports.export', 'audit.view', 'iam.manage',
+            'salaries.view', 'salaries.update',
+            'reports.export', 'audit.view', 'iam.manage',
             'organization.view', 'organization.manage', 'entity-access.manage',
             'documents.view', 'documents.upload', 'documents.download', 'contracts.manage',
             'employee-financial.view',
@@ -103,7 +106,7 @@ final class RoleMatrix
         'Company HR Admin' => [
             ...self::SELF_SERVICE_PERMISSIONS,
             'employees.view', 'employees.create', 'employees.update', 'employees.view-sensitive',
-            'salaries.view', 'payroll.prepare', 'payslips.publish', 'reports.export',
+            'salaries.view', 'reports.export',
             'organization.view', 'organization.manage',
             'documents.view', 'documents.upload', 'documents.download', 'contracts.manage',
             'employee-financial.view',
@@ -118,7 +121,7 @@ final class RoleMatrix
         'Payroll Administrator' => [
             ...self::SELF_SERVICE_PERMISSIONS,
             'employees.view', 'employees.view-sensitive', 'salaries.view', 'salaries.update',
-            'payroll.prepare', 'payslips.publish', 'reports.export',
+            'payroll.view', 'payroll.prepare', 'payroll.validate', 'payslips.publish', 'reports.export',
             'organization.view', 'employee-financial.view',
             'attendance.view',
             'leave.view', 'leave.report', 'leave.confirm-payroll',
@@ -126,12 +129,12 @@ final class RoleMatrix
         ],
         'Finance Reviewer' => [
             ...self::SELF_SERVICE_PERMISSIONS,
-            'salaries.view', 'payroll.review', 'reports.export', 'organization.view', 'employee-financial.view',
+            'salaries.view', 'salaries.approve', 'payroll.view', 'payroll.review', 'reports.export', 'organization.view', 'employee-financial.view',
             'overtime.view', 'overtime.report',
         ],
         'Final Payroll Approver' => [
             ...self::SELF_SERVICE_PERMISSIONS,
-            'salaries.view', 'payroll.approve', 'payroll.lock', 'reports.export', 'organization.view',
+            'salaries.view', 'payroll.view', 'payroll.approve', 'payroll.lock', 'reports.export', 'organization.view',
         ],
         'Branch Manager' => [
             ...self::SELF_SERVICE_PERMISSIONS,
@@ -155,6 +158,7 @@ final class RoleMatrix
             'attendance.view',
             'leave.view', 'leave.report',
             'overtime.view', 'overtime.report',
+            'payroll.view',
         ],
     ];
 

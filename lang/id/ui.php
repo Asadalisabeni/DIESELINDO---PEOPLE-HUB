@@ -72,10 +72,10 @@ return [
     ],
     'home' => [
         'title' => 'Ruang kerja karyawan yang terhubung',
-        'eyebrow' => 'Phase 9 · Lembur',
-        'description' => 'Workspace aman untuk rencana lembur, approval berurutan, validasi attendance aktual, dan kelayakan payroll.',
+        'eyebrow' => 'Phase 10 · Fondasi payroll',
+        'description' => 'Workspace terkendali untuk versi salary, kalender payroll, snapshot gross-to-net immutable, dan temuan validasi eksplisit.',
         'status_label' => 'Status checkpoint',
-        'status_value' => 'Phase 5 terkunci',
+        'status_value' => 'Phase 9 terkunci',
         'foundation_label' => 'Fondasi aktif',
         'foundation_value' => 'Blade · Tailwind · Alpine',
         'language_label' => 'Bahasa',
@@ -168,7 +168,7 @@ return [
         'locked' => 'Terkunci',
     ],
     'footer' => [
-        'baseline' => 'Lembur · Phase 9',
+        'baseline' => 'Fondasi payroll · Phase 10',
         'privacy' => 'Data bisnis dibatasi berdasarkan role dan legal entity',
     ],
 ];

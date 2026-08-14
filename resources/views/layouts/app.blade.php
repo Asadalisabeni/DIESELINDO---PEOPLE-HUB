@@ -123,10 +123,16 @@
                             </li>
                         @endif
                     @endcan
-                    @foreach ([
-                        ['wallet', 'payroll'],
-                        ['chart', 'reports'],
-                    ] as [$icon, $label])
+                    @if (auth()->user()->can('payroll.view') || auth()->user()->can('salaries.view'))
+                        <li>
+                            <a href="{{ route('payroll.admin.index') }}" @class([
+                                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition',
+                                'bg-white/10 text-white shadow-sm' => request()->routeIs('payroll.admin.*'),
+                                'text-slate-400 hover:bg-white/5 hover:text-white' => ! request()->routeIs('payroll.admin.*'),
+                            ])><x-icon name="wallet" /><span>{{ __('ui.nav.payroll') }}</span></a>
+                        </li>
+                    @endif
+                    @foreach ([['chart', 'reports']] as [$icon, $label])
                         <li>
                             <span class="flex cursor-not-allowed items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-600" aria-disabled="true">
                                 <x-icon :name="$icon" />
