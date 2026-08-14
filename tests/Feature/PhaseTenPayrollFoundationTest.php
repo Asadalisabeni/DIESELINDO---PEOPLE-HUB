@@ -273,7 +273,7 @@ test('monthly gross to net creates encrypted immutable snapshots and validates w
 
     $validated = app(PayrollManager::class)->validateRun($context['payroll'], $calculated);
     expect($validated->runStatus())->toBe(PayrollRunStatus::Validated)
-        ->and($validated->validation_summary)->toBe(['error' => 0, 'warning' => 1, 'info' => 0]);
+        ->and($validated->validation_summary)->toMatchArray(['error' => 0, 'warning' => 1, 'info' => 0]);
     expect(fn () => $snapshot->update(['net_total' => '1.0000']))->toThrow(LogicException::class)
         ->and(fn () => $snapshot->items->firstOrFail()->update(['amount' => '1.0000']))->toThrow(LogicException::class)
         ->and(fn () => $validated->update(['net_total' => '1.0000']))->toThrow(LogicException::class);

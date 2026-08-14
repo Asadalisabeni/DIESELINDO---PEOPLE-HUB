@@ -12,7 +12,7 @@ Terakhir diperbarui: 14 Agustus 2026 (Asia/Jakarta)
   build/audit. Annotated tag `phase-9-complete` menunjuk tepat ke main commit tersebut;
   tagger terverifikasi persis `As'ad Alisabeni <sabeni706@gmail.com>` dan apostrof tidak hilang.
 - Phase 10 branch: `feature/phase-10-payroll-foundation`, dibuat tepat dari tag
-  `phase-9-complete`.
+  `phase-9-complete`, dan dipublikasikan sebagai draft PR #29 ke `develop`.
 - Laravel 13, PHP 8.3, MySQL 8, Blade, Tailwind CSS 4, Alpine.js, Vite, UTC storage,
   tampilan Asia/Jakarta, IDR, serta UI Indonesia/Inggris tetap baseline.
 
@@ -53,7 +53,7 @@ Terakhir diperbarui: 14 Agustus 2026 (Asia/Jakarta)
 - Phase 9 lock: PASS — PR #27/#28 merged, tag main terverifikasi, dan main CI run
   `31683755528` hijau.
 - Composer quality: PASS — Pint bersih, Larastan/PHPStan level 8 tanpa suppression
-  dan 0 error, full Pest 104 tests / 905 assertions.
+  dan 0 error, full Pest 104 tests / 910 assertions.
 - Phase 10 feature/security suite: PASS — 11 tests / 113 assertions untuk schema,
   least privilege, decimal math, overlap, maker-checker, encryption, checksum,
   immutability, gross-to-net, joiner, salary change, working-day schedule, unpaid
@@ -105,6 +105,6 @@ Terakhir diperbarui: 14 Agustus 2026 (Asia/Jakarta)
 
 ## Next authorized step
 
-Publish implementation candidate ke draft PR Phase 10 yang menargetkan `develop`,
-tunggu GitHub Actions hijau, lalu Project/UAT Lead meninjau hasil dan gate di atas.
+Tunggu GitHub Actions draft PR #29 hijau, lalu Project/UAT Lead meninjau hasil dan
+gate di atas.
 Jangan merge, promote, atau membuat tag Phase 10 sebelum instruksi lock eksplisit.
