@@ -95,4 +95,22 @@ class LegalEntity extends Model
     {
         return $this->hasMany(AttendanceSource::class);
     }
+
+    /** @return HasMany<SalaryComponent, $this> */
+    public function salaryComponents(): HasMany
+    {
+        return $this->hasMany(SalaryComponent::class);
+    }
+
+    /** @return HasMany<PayrollGroup, $this> */
+    public function payrollGroups(): HasMany
+    {
+        return $this->hasMany(PayrollGroup::class);
+    }
+
+    /** @return HasMany<PayrollRun, $this> */
+    public function payrollRuns(): HasMany
+    {
+        return $this->hasMany(PayrollRun::class);
+    }
 }

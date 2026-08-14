@@ -72,10 +72,10 @@ return [
     ],
     'home' => [
         'title' => 'Your connected employee workspace',
-        'eyebrow' => 'Phase 9 · Overtime',
-        'description' => 'A secure workspace for planned overtime, sequential approval, actual attendance validation, and payroll eligibility.',
+        'eyebrow' => 'Phase 10 · Payroll foundation',
+        'description' => 'A controlled workspace for salary versions, payroll calendars, immutable gross-to-net snapshots, and explicit validation findings.',
         'status_label' => 'Checkpoint status',
-        'status_value' => 'Phase 5 locked',
+        'status_value' => 'Phase 9 locked',
         'foundation_label' => 'Active foundation',
         'foundation_value' => 'Blade · Tailwind · Alpine',
         'language_label' => 'Languages',
@@ -168,7 +168,7 @@ return [
         'locked' => 'Locked',
     ],
     'footer' => [
-        'baseline' => 'Overtime · Phase 9',
+        'baseline' => 'Payroll foundation · Phase 10',
         'privacy' => 'Business data is restricted by role and legal entity',
     ],
 ];

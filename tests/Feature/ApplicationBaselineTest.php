@@ -28,7 +28,7 @@ test('the home page renders the shared application layout', function () {
         ->assertSee('<footer', false)
         ->assertSee('Lewati ke konten utama')
         ->assertSee('Dieselindo PeopleHub')
-        ->assertSee('Phase 5 terkunci')
+        ->assertSee('Phase 9 terkunci')
         ->assertSee('Ruang kerja karyawan yang terhubung');
 });
 

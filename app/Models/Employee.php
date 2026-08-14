@@ -124,6 +124,24 @@ class Employee extends Model
         return $this->hasMany(OvertimeRequest::class);
     }
 
+    /** @return HasMany<SalaryHistory, $this> */
+    public function salaryHistories(): HasMany
+    {
+        return $this->hasMany(SalaryHistory::class)->latest('effective_from');
+    }
+
+    /** @return HasMany<PayrollGroupMembership, $this> */
+    public function payrollGroupMemberships(): HasMany
+    {
+        return $this->hasMany(PayrollGroupMembership::class)->latest('effective_from');
+    }
+
+    /** @return HasMany<PayrollRunEmployee, $this> */
+    public function payrollRunSnapshots(): HasMany
+    {
+        return $this->hasMany(PayrollRunEmployee::class);
+    }
+
     /** @return HasMany<EmployeeProfileChangeRequest, $this> */
     public function profileChangeRequests(): HasMany
     {
